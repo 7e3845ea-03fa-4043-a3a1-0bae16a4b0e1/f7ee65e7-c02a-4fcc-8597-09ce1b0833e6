@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>HAC Addons</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+<div class="logo">HAC <span>Addons</span></div>
+<button class="menu" onclick="toggleMenu()">☰</button>
+</header>
+
+<nav id="nav">
+<a href="./">ホーム</a>
+<a href="#addons">アドオン</a>
+<a href="#categories">カテゴリ</a>
+</nav>
+
+<main>
+
+<section class="hero">
+<h1>Minecraft Addons</h1>
+<p>統合版Minecraftのアドオンを探そう。</p>
+
+<div class="search">
+<input id="searchInput" type="search" placeholder="アドオンを検索">
+</div>
+</section>
+
+<section id="categories">
+<h2>カテゴリ</h2>
+
+<div class="categories">
+<button onclick="filterCategory('すべて')">すべて</button>
+<button onclick="filterCategory('家具')">家具</button>
+<button onclick="filterCategory('武器')">武器</button>
+<button onclick="filterCategory('乗り物')">乗り物</button>
+<button onclick="filterCategory('ホラー')">ホラー</button>
+<button onclick="filterCategory('ミニゲーム')">ミニゲーム</button>
+<button onclick="filterCategory('その他')">その他</button>
+</div>
+</section>
+
+<section id="addons">
+<div class="section-title">
+<h2>アドオン</h2>
+<span id="count"></span>
+</div>
+
+<div id="addonList" class="addon-list"></div>
+</section>
+
+</main>
+
+<footer>
+<p>© HAC Addons</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
