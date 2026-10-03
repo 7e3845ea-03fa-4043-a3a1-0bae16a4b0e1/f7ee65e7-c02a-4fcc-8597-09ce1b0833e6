@@ -417,52 +417,113 @@ accountMessage.classList.add("show");
 
 if(accountButton){
 
-accountButton.addEventListener("click",openAccountModal);
+accountButton.addEventListener(
+"click",
+openAccountModal
+);
 
 }
 
 if(mobileAccountButton){
 
-mobileAccountButton.addEventListener("click",()=>{
+mobileAccountButton.addEventListener(
+"click",
+()=>{
 
 mobileMenu.classList.remove("active");
 openAccountModal();
 
-});
+}
+);
 
 }
 
 if(accountOverlay){
 
-accountOverlay.addEventListener("click",closeAccountModal);
+accountOverlay.addEventListener(
+"click",
+closeAccountModal
+);
 
 }
 
 if(accountClose){
 
-accountClose.addEventListener("click",closeAccountModal);
+accountClose.addEventListener(
+"click",
+closeAccountModal
+);
 
 }
 
 if(registerForm){
 
-registerForm.addEventListener("submit",async event=>{
+registerForm.addEventListener(
+"submit",
+async event=>{
 
 event.preventDefault();
 
-const username=document.getElementById("registerUsername").value.trim();
+const username=
+document.getElementById(
+"registerUsername"
+).value.trim();
 
-const email=document.getElementById("registerEmail").value.trim();
+const displayName=
+document.getElementById(
+"registerDisplayName"
+).value.trim();
 
-const password=document.getElementById("registerPassword").value;
+const password=
+document.getElementById(
+"registerPassword"
+).value;
 
-const passwordConfirm=document.getElementById("registerPasswordConfirm").value;
+const passwordConfirm=
+document.getElementById(
+"registerPasswordConfirm"
+).value;
 
-const submitButton=registerForm.querySelector("button[type='submit']");
+const submitButton=
+registerForm.querySelector(
+"button[type='submit']"
+);
+
+if(!/^[A-Za-z0-9_]{3,20}$/.test(username)){
+
+showAccountMessage(
+"ユーザーネームは3〜20文字の英数字と_のみ使用できます。"
+);
+
+return;
+
+}
+
+if(!displayName){
+
+showAccountMessage(
+"表示名を入力してください。"
+);
+
+return;
+
+}
+
+if(password.length<8){
+
+showAccountMessage(
+"パスワードは8文字以上にしてください。"
+);
+
+return;
+
+}
 
 if(password!==passwordConfirm){
 
-showAccountMessage("パスワードが一致していません。");
+showAccountMessage(
+"パスワードが一致していません。"
+);
 
 return;
 
@@ -471,7 +532,9 @@ return;
 submitButton.disabled=true;
 submitButton.textContent="作成中...";
 
-showAccountMessage("アカウントを作成しています...");
+showAccountMessage(
+"アカウントを作成しています..."
+);
 
 try{
 
@@ -484,7 +547,7 @@ headers:{
 },
 body:JSON.stringify({
 username,
-email,
+display_name:displayName,
 password
 })
 }
@@ -495,35 +558,40 @@ const data=await response.json();
 if(!response.ok){
 
 throw new Error(
-data.error||"アカウントを作成できませんでした。"
+data.error ||
+"アカウントを作成できませんでした。"
 );
 
 }
 
-showAccountMessage("アカウントを作成しました！");
+showAccountMessage(
+"アカウントを作成しました！"
+);
 
 registerForm.reset();
 
-setTimeout(()=>{
-
-closeAccountModal();
-
-},1200);
+setTimeout(
+closeAccountModal,
+1200
+);
 
 }catch(error){
 
 showAccountMessage(
-error.message||"通信エラーが発生しました。"
+error.message ||
+"通信エラーが発生しました。"
 );
 
 }finally{
 
 submitButton.disabled=false;
-submitButton.textContent="アカウントを作成";
+submitButton.textContent=
+"アカウントを作成";
 
 }
 
-});
+}
+);
 
 }
 
