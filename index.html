@@ -21,7 +21,7 @@
 <a class="active" href="./">ホーム</a>
 <a href="#addons">アドオン</a>
 <a href="#categories">カテゴリ</a>
-<button class="account-button" id="accountButton" type="button">アカウント</button>
+<button class="account-button" id="accountButton" type="button">マイページ</button>
 </nav>
 
 <button class="menu-button" id="menuButton" aria-label="メニュー">
@@ -37,7 +37,7 @@
 <a href="./">ホーム</a>
 <a href="#addons">アドオン</a>
 <a href="#categories">カテゴリ</a>
-<button class="mobile-account-button" id="mobileAccountButton" type="button">アカウント</button>
+<button class="mobile-account-button" id="mobileAccountButton" type="button">マイページ</button>
 </div>
 
 <main>
@@ -413,31 +413,12 @@ style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;backg
 <h2 id="accountDisplayName"></h2>
 
 <p class="account-description">
-ログインしています。
+マイページ
 </p>
 
 <div
 style="padding:14px;background:#f5f5f6;border-radius:11px;margin-bottom:14px;"
 >
-
-<div
-style="font-size:10px;color:#aaa;margin-bottom:5px;"
->
-表示名
-</div>
-
-<div
-id="accountDisplayNameInfo"
-style="font-size:14px;font-weight:600;color:#333;"
->
-</div>
-
-</div>
-
-<div
-style="padding:14px;background:#f5f5f6;border-radius:11px;margin-bottom:14px;"
->
-
 <div
 style="font-size:10px;color:#aaa;margin-bottom:5px;"
 >
@@ -449,34 +430,7 @@ id="accountUsername"
 style="font-size:14px;font-weight:600;color:#333;"
 >
 </div>
-
 </div>
-
-<div
-style="padding:14px;background:#f5f5f6;border-radius:11px;margin-bottom:14px;"
->
-
-<div
-style="font-size:10px;color:#aaa;margin-bottom:5px;"
->
-アカウントID
-</div>
-
-<div
-id="accountId"
-style="font-size:12px;font-weight:600;color:#333;word-break:break-all;"
->
-</div>
-
-</div>
-
-<button
-type="button"
-id="openProfileButton"
-style="width:100%;margin-top:4px;padding:12px;border:0;border-radius:10px;background:#f3f3f4;color:#555;font-size:12px;"
->
-マイページ
-</button>
 
 <button
 class="register-button"
@@ -490,87 +444,6 @@ type="button"
 class="account-message"
 id="loggedInMessage"
 ></div>
-
-</div>
-
-<div id="accountProfileView" style="display:none;">
-
-<h2>マイページ</h2>
-
-<p class="account-description">
-アカウント情報を確認・変更できます。
-</p>
-
-<div
-style="padding:14px;background:#f5f5f6;border-radius:11px;margin-bottom:10px;"
->
-
-<div
-style="font-size:10px;color:#aaa;margin-bottom:5px;"
->
-ユーザーネーム
-</div>
-
-<div
-id="profileUsername"
-style="font-size:14px;font-weight:600;color:#333;"
->
-</div>
-
-</div>
-
-<div
-style="padding:14px;background:#f5f5f6;border-radius:11px;margin-bottom:10px;"
->
-
-<div
-style="font-size:10px;color:#aaa;margin-bottom:5px;"
->
-アカウントID
-</div>
-
-<div
-id="profileId"
-style="font-size:12px;font-weight:600;color:#333;word-break:break-all;"
->
-</div>
-
-</div>
-
-<form id="displayNameForm">
-
-<label>
-表示名
-<input
-id="profileDisplayName"
-type="text"
-autocomplete="nickname"
-maxlength="30"
-required
->
-</label>
-
-<button
-class="register-button"
-type="submit"
->
-表示名を変更
-</button>
-
-<div
-class="account-message"
-id="displayNameMessage"
-></div>
-
-</form>
-
-<button
-type="button"
-id="backAccountButton"
-style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;background:#f3f3f4;color:#555;font-size:12px;"
->
-アカウント画面に戻る
-</button>
 
 </div>
 
