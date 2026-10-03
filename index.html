@@ -246,7 +246,6 @@ HAC AddonsはMinecraft統合版向けのアドオンを
 <span>© HAC Addons</span>
 
 </div>
-
 </footer>
 
 <div class="account-modal" id="accountModal">
@@ -255,7 +254,12 @@ HAC AddonsはMinecraft統合版向けのアドオンを
 
 <div class="account-panel">
 
-<button class="account-close" id="accountClose" type="button">×</button>
+<button
+class="account-close"
+id="accountClose"
+type="button"
+aria-label="閉じる"
+>×</button>
 
 <div class="section-label">HAC ADDONS ACCOUNT</div>
 
@@ -268,22 +272,24 @@ HAC Addonsのアカウントを作成できます。
 <form id="registerForm">
 
 <label>
-ユーザー名
+ユーザーネーム
 <input
 id="registerUsername"
 type="text"
 autocomplete="username"
 maxlength="20"
+pattern="[A-Za-z0-9_]{3,20}"
 required
 >
 </label>
 
 <label>
-メールアドレス
+表示名
 <input
-id="registerEmail"
-type="email"
-autocomplete="email"
+id="registerDisplayName"
+type="text"
+autocomplete="nickname"
+maxlength="30"
 required
 >
 </label>
@@ -301,7 +307,7 @@ required
 </label>
 
 <label>
-パスワード確認
+確認パスワード
 <input
 id="registerPasswordConfirm"
 type="password"
@@ -312,11 +318,17 @@ required
 >
 </label>
 
-<button class="register-button" type="submit">
+<button
+class="register-button"
+type="submit"
+>
 アカウントを作成
 </button>
 
-<div class="account-message" id="accountMessage"></div>
+<div
+class="account-message"
+id="accountMessage"
+></div>
 
 </form>
 
