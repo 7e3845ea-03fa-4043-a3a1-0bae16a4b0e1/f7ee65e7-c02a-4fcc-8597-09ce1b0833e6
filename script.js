@@ -374,4 +374,157 @@ mobileMenu.classList.remove("active");
 
 }
 
+const accountButton=document.getElementById("accountButton");
+const mobileAccountButton=document.getElementById("mobileAccountButton");
+const accountModal=document.getElementById("accountModal");
+const accountOverlay=document.getElementById("accountOverlay");
+const accountClose=document.getElementById("accountClose");
+const registerForm=document.getElementById("registerForm");
+const accountMessage=document.getElementById("accountMessage");
+
+function openAccountModal(){
+
+if(!accountModal){
+return;
+}
+
+accountModal.classList.add("active");
+document.body.style.overflow="hidden";
+
+}
+
+function closeAccountModal(){
+
+if(!accountModal){
+return;
+}
+
+accountModal.classList.remove("active");
+document.body.style.overflow="";
+
+}
+
+function showAccountMessage(message){
+
+if(!accountMessage){
+return;
+}
+
+accountMessage.textContent=message;
+accountMessage.classList.add("show");
+
+}
+
+if(accountButton){
+
+accountButton.addEventListener("click",openAccountModal);
+
+}
+
+if(mobileAccountButton){
+
+mobileAccountButton.addEventListener("click",()=>{
+
+mobileMenu.classList.remove("active");
+openAccountModal();
+
+});
+
+}
+
+if(accountOverlay){
+
+accountOverlay.addEventListener("click",closeAccountModal);
+
+}
+
+if(accountClose){
+
+accountClose.addEventListener("click",closeAccountModal);
+
+}
+
+if(registerForm){
+
+registerForm.addEventListener("submit",async event=>{
+
+event.preventDefault();
+
+const username=document.getElementById("registerUsername").value.trim();
+
+const email=document.getElementById("registerEmail").value.trim();
+
+const password=document.getElementById("registerPassword").value;
+
+const passwordConfirm=document.getElementById("registerPasswordConfirm").value;
+
+const submitButton=registerForm.querySelector("button[type='submit']");
+
+if(password!==passwordConfirm){
+
+showAccountMessage("パスワードが一致していません。");
+
+return;
+
+}
+
+submitButton.disabled=true;
+submitButton.textContent="作成中...";
+
+showAccountMessage("アカウントを作成しています...");
+
+try{
+
+const response=await fetch(
+"https://hac-addons-api.hac-addons.workers.dev/api/register",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+username,
+email,
+password
+})
+}
+);
+
+const data=await response.json();
+
+if(!response.ok){
+
+throw new Error(
+data.error||"アカウントを作成できませんでした。"
+);
+
+}
+
+showAccountMessage("アカウントを作成しました！");
+
+registerForm.reset();
+
+setTimeout(()=>{
+
+closeAccountModal();
+
+},1200);
+
+}catch(error){
+
+showAccountMessage(
+error.message||"通信エラーが発生しました。"
+);
+
+}finally{
+
+submitButton.disabled=false;
+submitButton.textContent="アカウントを作成";
+
+}
+
+});
+
+}
+
 loadAddons();
