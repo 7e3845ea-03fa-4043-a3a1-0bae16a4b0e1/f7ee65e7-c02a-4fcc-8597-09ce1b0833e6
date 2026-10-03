@@ -203,9 +203,13 @@ autocomplete="off"
 <div class="addon-grid" id="addonList"></div>
 
 <div class="empty" id="emptyState">
+
 <div class="empty-symbol">⌕</div>
+
 <h3>アドオンが見つかりません</h3>
+
 <p>検索条件を変更してみてください。</p>
+
 </div>
 
 </section>
@@ -239,13 +243,16 @@ HAC AddonsはMinecraft統合版向けのアドオンを
 <div class="footer-inner">
 
 <a href="./" class="logo footer-logo">
+
 <span class="logo-icon">H</span>
 <span class="logo-text">HAC <b>Addons</b></span>
+
 </a>
 
 <span>© HAC Addons</span>
 
 </div>
+
 </footer>
 
 <div class="account-modal" id="accountModal">
@@ -262,6 +269,65 @@ aria-label="閉じる"
 >×</button>
 
 <div class="section-label">HAC ADDONS ACCOUNT</div>
+
+<div id="accountLoginView">
+
+<h2>ログイン</h2>
+
+<p class="account-description">
+HAC Addonsのアカウントにログインできます。
+</p>
+
+<form id="loginForm">
+
+<label>
+ユーザーネーム
+<input
+id="loginUsername"
+type="text"
+autocomplete="username"
+maxlength="20"
+pattern="[A-Za-z0-9_]{3,20}"
+required
+>
+</label>
+
+<label>
+パスワード
+<input
+id="loginPassword"
+type="password"
+autocomplete="current-password"
+maxlength="128"
+required
+>
+</label>
+
+<button
+class="register-button"
+type="submit"
+>
+ログイン
+</button>
+
+<div
+class="account-message"
+id="loginMessage"
+></div>
+
+</form>
+
+<button
+type="button"
+id="showRegisterButton"
+style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;background:#f3f3f4;color:#555;font-size:12px;"
+>
+アカウントを作成
+</button>
+
+</div>
+
+<div id="accountRegisterView" style="display:none;">
 
 <h2>アカウントを作成</h2>
 
@@ -331,6 +397,55 @@ id="accountMessage"
 ></div>
 
 </form>
+
+<button
+type="button"
+id="showLoginButton"
+style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;background:#f3f3f4;color:#555;font-size:12px;"
+>
+ログインに戻る
+</button>
+
+</div>
+
+<div id="accountLoggedInView" style="display:none;">
+
+<h2 id="accountDisplayName"></h2>
+
+<p class="account-description">
+ログインしています。
+</p>
+
+<div
+style="padding:14px;background:#f5f5f6;border-radius:11px;margin-bottom:14px;"
+>
+<div
+style="font-size:10px;color:#aaa;margin-bottom:5px;"
+>
+ユーザーネーム
+</div>
+
+<div
+id="accountUsername"
+style="font-size:14px;font-weight:600;color:#333;"
+>
+</div>
+</div>
+
+<button
+class="register-button"
+id="logoutButton"
+type="button"
+>
+ログアウト
+</button>
+
+<div
+class="account-message"
+id="loggedInMessage"
+></div>
+
+</div>
 
 </div>
 </div>
