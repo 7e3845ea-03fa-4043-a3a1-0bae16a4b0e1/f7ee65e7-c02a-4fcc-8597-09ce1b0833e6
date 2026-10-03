@@ -356,7 +356,9 @@ if(menuButton){
 
 menuButton.addEventListener("click",()=>{
 
+if(mobileMenu){
 mobileMenu.classList.toggle("active");
+}
 
 });
 
@@ -378,6 +380,7 @@ mobileMenu.classList.remove("active");
 
 const accountButton=document.getElementById("accountButton");
 const mobileAccountButton=document.getElementById("mobileAccountButton");
+
 const accountModal=document.getElementById("accountModal");
 const accountOverlay=document.getElementById("accountOverlay");
 const accountClose=document.getElementById("accountClose");
@@ -442,18 +445,30 @@ mobileAccountButton.textContent=text;
 function showAccountView(view){
 
 if(accountLoginView){
+
 accountLoginView.style.display=
-view==="login" ? "block" : "none";
+view==="login"
+?"block"
+:"none";
+
 }
 
 if(accountRegisterView){
+
 accountRegisterView.style.display=
-view==="register" ? "block" : "none";
+view==="register"
+?"block"
+:"none";
+
 }
 
 if(accountLoggedInView){
+
 accountLoggedInView.style.display=
-view==="loggedin" ? "block" : "none";
+view==="loggedin"
+?"block"
+:"none";
+
 }
 
 }
@@ -465,7 +480,10 @@ return;
 }
 
 accountModal.classList.add("active");
+
 document.body.style.overflow="hidden";
+
+clearMessages();
 
 checkLoginState();
 
@@ -478,6 +496,7 @@ return;
 }
 
 accountModal.classList.remove("active");
+
 document.body.style.overflow="";
 
 }
@@ -489,6 +508,7 @@ return;
 }
 
 accountMessage.textContent=message;
+
 accountMessage.classList.add("show");
 
 }
@@ -500,6 +520,7 @@ return;
 }
 
 loginMessage.textContent=message;
+
 loginMessage.classList.add("show");
 
 }
@@ -511,6 +532,7 @@ return;
 }
 
 loggedInMessage.textContent=message;
+
 loggedInMessage.classList.add("show");
 
 }
@@ -518,18 +540,27 @@ loggedInMessage.classList.add("show");
 function clearMessages(){
 
 if(accountMessage){
+
 accountMessage.textContent="";
+
 accountMessage.classList.remove("show");
+
 }
 
 if(loginMessage){
+
 loginMessage.textContent="";
+
 loginMessage.classList.remove("show");
+
 }
 
 if(loggedInMessage){
+
 loggedInMessage.textContent="";
+
 loggedInMessage.classList.remove("show");
+
 }
 
 }
@@ -540,19 +571,26 @@ if(!user){
 return;
 }
 
+const displayName=
+user.display_name ||
+user.username ||
+"マイページ";
+
 if(accountDisplayName){
+
 accountDisplayName.textContent=
-user.display_name || user.username;
+displayName;
+
 }
 
 if(accountUsername){
+
 accountUsername.textContent=
 user.username || "";
+
 }
 
-setAccountButtonText(
-user.display_name || user.username
-);
+setAccountButtonText(displayName);
 
 showAccountView("loggedin");
 
@@ -560,7 +598,7 @@ showAccountView("loggedin");
 
 function updateLoggedOutUser(){
 
-setAccountButtonText("アカウント");
+setAccountButtonText("マイページ");
 
 showAccountView("login");
 
@@ -573,7 +611,9 @@ const token=getToken();
 if(!token){
 
 updateLoggedOutUser();
+
 return;
+
 }
 
 try{
@@ -593,7 +633,9 @@ const data=await response.json();
 if(!response.ok){
 
 setToken("");
+
 updateLoggedOutUser();
+
 return;
 
 }
@@ -605,6 +647,7 @@ updateLoggedInUser(data.user);
 }else{
 
 setToken("");
+
 updateLoggedOutUser();
 
 }
@@ -617,11 +660,45 @@ console.error(error);
 
 }
 
+function openMyPage(){
+
+if(mobileMenu){
+
+mobileMenu.classList.remove("active");
+
+}
+
+if(!accountModal){
+
+return;
+
+}
+
+accountModal.classList.add("active");
+
+document.body.style.overflow="hidden";
+
+clearMessages();
+
+const token=getToken();
+
+if(token){
+
+checkLoginState();
+
+}else{
+
+showAccountView("login");
+
+}
+
+}
+
 if(accountButton){
 
 accountButton.addEventListener(
 "click",
-openAccountModal
+openMyPage
 );
 
 }
@@ -630,15 +707,7 @@ if(mobileAccountButton){
 
 mobileAccountButton.addEventListener(
 "click",
-()=>{
-
-if(mobileMenu){
-mobileMenu.classList.remove("active");
-}
-
-openAccountModal();
-
-}
+openMyPage
 );
 
 }
@@ -668,6 +737,7 @@ showRegisterButton.addEventListener(
 ()=>{
 
 clearMessages();
+
 showAccountView("register");
 
 }
@@ -682,6 +752,7 @@ showLoginButton.addEventListener(
 ()=>{
 
 clearMessages();
+
 showAccountView("login");
 
 }
@@ -773,6 +844,7 @@ return;
 }
 
 submitButton.disabled=true;
+
 submitButton.textContent="作成中...";
 
 showAccountMessage(
@@ -817,6 +889,7 @@ setTimeout(
 ()=>{
 
 showAccountView("login");
+
 clearMessages();
 
 },
@@ -833,6 +906,7 @@ error.message ||
 }finally{
 
 submitButton.disabled=false;
+
 submitButton.textContent=
 "アカウントを作成";
 
@@ -887,7 +961,9 @@ return;
 }
 
 submitButton.disabled=true;
-submitButton.textContent="ログイン中...";
+
+submitButton.textContent=
+"ログイン中...";
 
 showLoginMessage(
 "ログインしています..."
@@ -956,7 +1032,9 @@ error.message ||
 }finally{
 
 submitButton.disabled=false;
-submitButton.textContent="ログイン";
+
+submitButton.textContent=
+"ログイン";
 
 }
 
@@ -974,7 +1052,9 @@ async ()=>{
 const token=getToken();
 
 logoutButton.disabled=true;
-logoutButton.textContent="ログアウト中...";
+
+logoutButton.textContent=
+"ログアウト中...";
 
 try{
 
@@ -1005,7 +1085,9 @@ updateLoggedOutUser();
 clearMessages();
 
 logoutButton.disabled=false;
-logoutButton.textContent="ログアウト";
+
+logoutButton.textContent=
+"ログアウト";
 
 }
 
