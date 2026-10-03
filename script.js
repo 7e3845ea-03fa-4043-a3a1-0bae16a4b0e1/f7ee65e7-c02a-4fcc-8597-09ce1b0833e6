@@ -1,6 +1,8 @@
 let addons=[];
 let currentCategory="すべて";
 
+const API_BASE="https://hac-addons-api.hac-addons.workers.dev";
+
 const addonList=document.getElementById("addonList");
 const searchInput=document.getElementById("searchInput");
 const count=document.getElementById("count");
@@ -379,8 +381,82 @@ const mobileAccountButton=document.getElementById("mobileAccountButton");
 const accountModal=document.getElementById("accountModal");
 const accountOverlay=document.getElementById("accountOverlay");
 const accountClose=document.getElementById("accountClose");
+
 const registerForm=document.getElementById("registerForm");
 const accountMessage=document.getElementById("accountMessage");
+
+const loginForm=document.getElementById("loginForm");
+const loginMessage=document.getElementById("loginMessage");
+
+const accountLoginView=document.getElementById("accountLoginView");
+const accountRegisterView=document.getElementById("accountRegisterView");
+const accountLoggedInView=document.getElementById("accountLoggedInView");
+
+const showRegisterButton=document.getElementById("showRegisterButton");
+const showLoginButton=document.getElementById("showLoginButton");
+
+const logoutButton=document.getElementById("logoutButton");
+
+const accountDisplayName=document.getElementById("accountDisplayName");
+const accountUsername=document.getElementById("accountUsername");
+
+const loggedInMessage=document.getElementById("loggedInMessage");
+
+function getToken(){
+
+return localStorage.getItem("hac_account_token") || "";
+
+}
+
+function setToken(token){
+
+if(token){
+
+localStorage.setItem(
+"hac_account_token",
+token
+);
+
+}else{
+
+localStorage.removeItem(
+"hac_account_token"
+);
+
+}
+
+}
+
+function setAccountButtonText(text){
+
+if(accountButton){
+accountButton.textContent=text;
+}
+
+if(mobileAccountButton){
+mobileAccountButton.textContent=text;
+}
+
+}
+
+function showAccountView(view){
+
+if(accountLoginView){
+accountLoginView.style.display=
+view==="login" ? "block" : "none";
+}
+
+if(accountRegisterView){
+accountRegisterView.style.display=
+view==="register" ? "block" : "none";
+}
+
+if(accountLoggedInView){
+accountLoggedInView.style.display=
+view==="loggedin" ? "block" : "none";
+}
+
+}
 
 function openAccountModal(){
 
@@ -390,6 +466,8 @@ return;
 
 accountModal.classList.add("active");
 document.body.style.overflow="hidden";
+
+checkLoginState();
 
 }
 
@@ -415,6 +493,130 @@ accountMessage.classList.add("show");
 
 }
 
+function showLoginMessage(message){
+
+if(!loginMessage){
+return;
+}
+
+loginMessage.textContent=message;
+loginMessage.classList.add("show");
+
+}
+
+function showLoggedInMessage(message){
+
+if(!loggedInMessage){
+return;
+}
+
+loggedInMessage.textContent=message;
+loggedInMessage.classList.add("show");
+
+}
+
+function clearMessages(){
+
+if(accountMessage){
+accountMessage.textContent="";
+accountMessage.classList.remove("show");
+}
+
+if(loginMessage){
+loginMessage.textContent="";
+loginMessage.classList.remove("show");
+}
+
+if(loggedInMessage){
+loggedInMessage.textContent="";
+loggedInMessage.classList.remove("show");
+}
+
+}
+
+function updateLoggedInUser(user){
+
+if(!user){
+return;
+}
+
+if(accountDisplayName){
+accountDisplayName.textContent=
+user.display_name || user.username;
+}
+
+if(accountUsername){
+accountUsername.textContent=
+user.username || "";
+}
+
+setAccountButtonText(
+user.display_name || user.username
+);
+
+showAccountView("loggedin");
+
+}
+
+function updateLoggedOutUser(){
+
+setAccountButtonText("アカウント");
+
+showAccountView("login");
+
+}
+
+async function checkLoginState(){
+
+const token=getToken();
+
+if(!token){
+
+updateLoggedOutUser();
+return;
+}
+
+try{
+
+const response=await fetch(
+API_BASE+"/api/me",
+{
+method:"GET",
+headers:{
+"Authorization":"Bearer "+token
+}
+}
+);
+
+const data=await response.json();
+
+if(!response.ok){
+
+setToken("");
+updateLoggedOutUser();
+return;
+
+}
+
+if(data.user){
+
+updateLoggedInUser(data.user);
+
+}else{
+
+setToken("");
+updateLoggedOutUser();
+
+}
+
+}catch(error){
+
+console.error(error);
+
+}
+
+}
+
 if(accountButton){
 
 accountButton.addEventListener(
@@ -430,7 +632,10 @@ mobileAccountButton.addEventListener(
 "click",
 ()=>{
 
+if(mobileMenu){
 mobileMenu.classList.remove("active");
+}
+
 openAccountModal();
 
 }
@@ -452,6 +657,34 @@ if(accountClose){
 accountClose.addEventListener(
 "click",
 closeAccountModal
+);
+
+}
+
+if(showRegisterButton){
+
+showRegisterButton.addEventListener(
+"click",
+()=>{
+
+clearMessages();
+showAccountView("register");
+
+}
+);
+
+}
+
+if(showLoginButton){
+
+showLoginButton.addEventListener(
+"click",
+()=>{
+
+clearMessages();
+showAccountView("login");
+
+}
 );
 
 }
@@ -519,6 +752,16 @@ return;
 
 }
 
+if(password.length>128){
+
+showAccountMessage(
+"パスワードは128文字以内にしてください。"
+);
+
+return;
+
+}
+
 if(password!==passwordConfirm){
 
 showAccountMessage(
@@ -539,7 +782,7 @@ showAccountMessage(
 try{
 
 const response=await fetch(
-"https://hac-addons-api.hac-addons.workers.dev/api/register",
+API_BASE+"/api/register",
 {
 method:"POST",
 headers:{
@@ -571,7 +814,12 @@ showAccountMessage(
 registerForm.reset();
 
 setTimeout(
-closeAccountModal,
+()=>{
+
+showAccountView("login");
+clearMessages();
+
+},
 1200
 );
 
@@ -595,4 +843,194 @@ submitButton.textContent=
 
 }
 
+if(loginForm){
+
+loginForm.addEventListener(
+"submit",
+async event=>{
+
+event.preventDefault();
+
+const username=
+document.getElementById(
+"loginUsername"
+).value.trim();
+
+const password=
+document.getElementById(
+"loginPassword"
+).value;
+
+const submitButton=
+loginForm.querySelector(
+"button[type='submit']"
+);
+
+if(!username){
+
+showLoginMessage(
+"ユーザーネームを入力してください。"
+);
+
+return;
+
+}
+
+if(!password){
+
+showLoginMessage(
+"パスワードを入力してください。"
+);
+
+return;
+
+}
+
+submitButton.disabled=true;
+submitButton.textContent="ログイン中...";
+
+showLoginMessage(
+"ログインしています..."
+);
+
+try{
+
+const response=await fetch(
+API_BASE+"/api/login",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+username,
+password
+})
+}
+);
+
+const data=await response.json();
+
+if(!response.ok){
+
+throw new Error(
+data.error ||
+"ログインできませんでした。"
+);
+
+}
+
+if(!data.token){
+
+throw new Error(
+"ログイン情報を取得できませんでした。"
+);
+
+}
+
+setToken(data.token);
+
+loginForm.reset();
+
+if(data.user){
+
+updateLoggedInUser(data.user);
+
+showLoggedInMessage(
+"ログインしました！"
+);
+
+}else{
+
+await checkLoginState();
+
+}
+
+}catch(error){
+
+showLoginMessage(
+error.message ||
+"通信エラーが発生しました。"
+);
+
+}finally{
+
+submitButton.disabled=false;
+submitButton.textContent="ログイン";
+
+}
+
+}
+);
+
+}
+
+if(logoutButton){
+
+logoutButton.addEventListener(
+"click",
+async ()=>{
+
+const token=getToken();
+
+logoutButton.disabled=true;
+logoutButton.textContent="ログアウト中...";
+
+try{
+
+if(token){
+
+await fetch(
+API_BASE+"/api/logout",
+{
+method:"POST",
+headers:{
+"Authorization":"Bearer "+token
+}
+}
+);
+
+}
+
+}catch(error){
+
+console.error(error);
+
+}finally{
+
+setToken("");
+
+updateLoggedOutUser();
+
+clearMessages();
+
+logoutButton.disabled=false;
+logoutButton.textContent="ログアウト";
+
+}
+
+}
+);
+
+}
+
+document.addEventListener(
+"keydown",
+event=>{
+
+if(
+event.key==="Escape" &&
+accountModal &&
+accountModal.classList.contains("active")
+){
+
+closeAccountModal();
+
+}
+
+}
+);
+
 loadAddons();
+
+checkLoginState();
