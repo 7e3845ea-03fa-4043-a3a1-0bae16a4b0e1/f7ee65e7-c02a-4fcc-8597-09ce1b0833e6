@@ -3,62 +3,185 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#ffffff">
 <title>HAC Addons</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<header>
-<div class="logo">HAC <span>Addons</span></div>
-<button class="menu" onclick="toggleMenu()">☰</button>
-</header>
-
-<nav id="nav">
-<a href="./">ホーム</a>
+<header class="header">
+<div class="header-inner">
+<a href="./" class="logo">
+<span class="logo-icon">H</span>
+<span class="logo-text">HAC <b>Addons</b></span>
+</a>
+<nav class="nav">
+<a class="active" href="./">ホーム</a>
 <a href="#addons">アドオン</a>
 <a href="#categories">カテゴリ</a>
 </nav>
-
+<button class="menu-button" id="menuButton" aria-label="メニュー">
+<span></span>
+<span></span>
+<span></span>
+</button>
+</div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+<a href="./">ホーム</a>
+<a href="#addons">アドオン</a>
+<a href="#categories">カテゴリ</a>
+</div>
 <main>
-
 <section class="hero">
-<h1>Minecraft Addons</h1>
-<p>統合版Minecraftのアドオンを探そう。</p>
-
-<div class="search">
-<input id="searchInput" type="search" placeholder="アドオンを検索">
+<div class="hero-content">
+<div class="hero-label">
+Minecraft Bedrock Addons
+</div>
+<h1>
+Minecraftを<br>
+もっと<span>楽しく。</span>
+</h1>
+<p>
+Minecraft統合版で使えるアドオンを<br>
+かんたんに探してダウンロード。
+</p>
+<div class="search-box">
+<svg viewBox="0 0 24 24">
+<circle cx="11" cy="11" r="7"></circle>
+<path d="m20 20-4-4"></path>
+</svg>
+<input
+id="searchInput"
+type="search"
+placeholder="アドオンを検索..."
+autocomplete="off"
+>
+<button id="clearSearch" type="button">×</button>
+</div>
 </div>
 </section>
-
-<section id="categories">
+<section class="section" id="categories">
+<div class="section-head">
+<div>
+<div class="section-label">CATEGORIES</div>
 <h2>カテゴリ</h2>
-
-<div class="categories">
-<button onclick="filterCategory('すべて')">すべて</button>
-<button onclick="filterCategory('家具')">家具</button>
-<button onclick="filterCategory('武器')">武器</button>
-<button onclick="filterCategory('乗り物')">乗り物</button>
-<button onclick="filterCategory('ホラー')">ホラー</button>
-<button onclick="filterCategory('ミニゲーム')">ミニゲーム</button>
-<button onclick="filterCategory('その他')">その他</button>
+</div>
+</div>
+<div class="category-list">
+<button class="category" data-category="すべて">
+<span class="category-icon">✦</span>
+<span>
+<strong>すべて</strong>
+<small>すべてのアドオン</small>
+</span>
+</button>
+<button class="category" data-category="家具">
+<span class="category-icon">▦</span>
+<span>
+<strong>家具</strong>
+<small>家具・インテリア</small>
+</span>
+</button>
+<button class="category" data-category="武器">
+<span class="category-icon">⚔</span>
+<span>
+<strong>武器</strong>
+<small>武器・戦闘</small>
+</span>
+</button>
+<button class="category" data-category="乗り物">
+<span class="category-icon">▱</span>
+<span>
+<strong>乗り物</strong>
+<small>車・鉄道など</small>
+</span>
+</button>
+<button class="category" data-category="ホラー">
+<span class="category-icon">◉</span>
+<span>
+<strong>ホラー</strong>
+<small>ホラー・恐怖</small>
+</span>
+</button>
+<button class="category" data-category="ミニゲーム">
+<span class="category-icon">▶</span>
+<span>
+<strong>ミニゲーム</strong>
+<small>ゲーム・遊び</small>
+</span>
+</button>
+<button class="category" data-category="その他">
+<span class="category-icon">＋</span>
+<span>
+<strong>その他</strong>
+<small>その他のアドオン</small>
+</span>
+</button>
 </div>
 </section>
-
-<section id="addons">
-<div class="section-title">
+<section class="section" id="addons">
+<div class="section-head addon-head">
+<div>
+<div class="section-label">ADDONS</div>
 <h2>アドオン</h2>
-<span id="count"></span>
 </div>
-
-<div id="addonList" class="addon-list"></div>
+<div class="count" id="count">0件</div>
+</div>
+<div class="filter-wrapper">
+<div class="filters">
+<button class="filter active" data-category="すべて">
+すべて
+</button>
+<button class="filter" data-category="家具">
+家具
+</button>
+<button class="filter" data-category="武器">
+武器
+</button>
+<button class="filter" data-category="乗り物">
+乗り物
+</button>
+<button class="filter" data-category="ホラー">
+ホラー
+</button>
+<button class="filter" data-category="ミニゲーム">
+ミニゲーム
+</button>
+<button class="filter" data-category="その他">
+その他
+</button>
+</div>
+</div>
+<div class="addon-grid" id="addonList"></div>
+<div class="empty" id="emptyState">
+<div class="empty-symbol">⌕</div>
+<h3>アドオンが見つかりません</h3>
+<p>検索条件を変更してみてください。</p>
+</div>
 </section>
-
+<section class="section about-section">
+<div class="about-card">
+<div class="about-logo">H</div>
+<div>
+<div class="section-label">ABOUT HAC ADDONS</div>
+<h2>お気に入りのアドオンを見つけよう。</h2>
+<p>
+HAC AddonsはMinecraft統合版向けのアドオンを
+見つけて、かんたんにダウンロードできる配布サイトです。
+</p>
+</div>
+</div>
+</section>
 </main>
-
 <footer>
-<p>© HAC Addons</p>
+<div class="footer-inner">
+<a href="./" class="logo footer-logo">
+<span class="logo-icon">H</span>
+<span class="logo-text">HAC <b>Addons</b></span>
+</a>
+<span>© HAC Addons</span>
+</div>
 </footer>
-
 <script src="script.js"></script>
 </body>
 </html>
