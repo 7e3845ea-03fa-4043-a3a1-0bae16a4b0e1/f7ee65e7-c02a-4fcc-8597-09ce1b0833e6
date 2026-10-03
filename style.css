@@ -828,13 +828,15 @@ color:#777;
 font-size:22px;
 }
 
-#registerForm{
+#registerForm,
+#displayNameForm{
 display:flex;
 flex-direction:column;
 gap:15px;
 }
 
-#registerForm label{
+#registerForm label,
+#displayNameForm label{
 display:flex;
 flex-direction:column;
 gap:7px;
@@ -843,7 +845,8 @@ font-weight:600;
 color:#555;
 }
 
-#registerForm input{
+#registerForm input,
+#displayNameForm input{
 width:100%;
 height:46px;
 padding:0 13px;
@@ -855,7 +858,8 @@ font-size:14px;
 transition:.18s;
 }
 
-#registerForm input:focus{
+#registerForm input:focus,
+#displayNameForm input:focus{
 border-color:#aaa;
 box-shadow:0 0 0 3px rgba(0,0,0,.05);
 }
@@ -887,6 +891,35 @@ line-height:1.5;
 
 .account-message.show{
 display:block;
+}
+
+#accountLoggedInView > div,
+#accountProfileView > div{
+transition:.18s;
+}
+
+#accountLoggedInView > div:hover,
+#accountProfileView > div:hover{
+background:#f1f1f2 !important;
+}
+
+#openProfileButton,
+#backAccountButton{
+transition:.18s;
+}
+
+#openProfileButton:hover,
+#backAccountButton:hover{
+background:#e9e9ea !important;
+color:#222 !important;
+}
+
+#displayNameForm{
+margin-top:4px;
+}
+
+#displayNameForm .register-button{
+margin-top:0;
 }
 
 @media(max-width:900px){
@@ -1019,6 +1052,22 @@ font-size:32px;
 padding:18px 20px;
 }
 
+.account-panel{
+width:calc(100% - 24px);
+max-height:calc(100vh - 24px);
+padding:22px;
+border-radius:17px;
+}
+
+.account-panel h2{
+font-size:24px;
+}
+
+.account-description{
+font-size:12px;
+margin-bottom:20px;
+}
+
 }
 
 @media(max-width:380px){
@@ -1029,6 +1078,14 @@ font-size:42px;
 
 .category small{
 display:none;
+}
+
+.account-panel{
+padding:19px;
+}
+
+.account-panel h2{
+font-size:22px;
 }
 
 }
