@@ -1065,22 +1065,36 @@ data.error||
 
 }
 
-showAccountMessage(
-"アカウントを作成しました！"
+if(!data.token){
+
+throw new Error(
+"ログイン情報を取得できませんでした。"
 );
+
+}
+
+setToken(data.token);
 
 registerForm.reset();
 
-setTimeout(
-()=>{
+if(data.user){
 
-showAccountView("login");
+updateLoggedInUser(
+data.user,
+true
+);
 
 clearMessages();
 
-},
-1200
+showLoggedInMessage(
+"アカウントを作成してログインしました！"
 );
+
+}else{
+
+await checkLoginState(true);
+
+}
 
 }catch(error){
 
@@ -1217,6 +1231,8 @@ data.user,
 true
 );
 
+clearMessages();
+
 showLoggedInMessage(
 "ログインしました！"
 );
@@ -1270,8 +1286,10 @@ return;
 
 }
 
-if(!profileDisplayNameInput||
-!profileUsernameInput){
+if(
+!profileDisplayNameInput||
+!profileUsernameInput
+){
 
 showProfileMessage(
 "プロフィール入力欄が見つかりません。"
@@ -1373,6 +1391,8 @@ false
 }
 
 showAccountView("profile");
+
+clearMessages();
 
 showProfileMessage(
 "プロフィールを保存しました！"
