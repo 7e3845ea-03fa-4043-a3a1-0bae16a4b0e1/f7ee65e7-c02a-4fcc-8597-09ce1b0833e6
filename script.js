@@ -394,14 +394,21 @@ const loginMessage=document.getElementById("loginMessage");
 const accountLoginView=document.getElementById("accountLoginView");
 const accountRegisterView=document.getElementById("accountRegisterView");
 const accountLoggedInView=document.getElementById("accountLoggedInView");
+const accountProfileView=document.getElementById("accountProfileView");
 
 const showRegisterButton=document.getElementById("showRegisterButton");
 const showLoginButton=document.getElementById("showLoginButton");
+
+const openProfileButton=document.getElementById("openProfileButton");
+const backAccountButton=document.getElementById("backAccountButton");
 
 const logoutButton=document.getElementById("logoutButton");
 
 const accountDisplayName=document.getElementById("accountDisplayName");
 const accountUsername=document.getElementById("accountUsername");
+
+const profileDisplayName=document.getElementById("profileDisplayName");
+const profileUsername=document.getElementById("profileUsername");
 
 const loggedInMessage=document.getElementById("loggedInMessage");
 
@@ -466,6 +473,15 @@ if(accountLoggedInView){
 
 accountLoggedInView.style.display=
 view==="loggedin"
+?"block"
+:"none";
+
+}
+
+if(accountProfileView){
+
+accountProfileView.style.display=
+view==="profile"
 ?"block"
 :"none";
 
@@ -542,7 +558,6 @@ function clearMessages(){
 if(accountMessage){
 
 accountMessage.textContent="";
-
 accountMessage.classList.remove("show");
 
 }
@@ -550,7 +565,6 @@ accountMessage.classList.remove("show");
 if(loginMessage){
 
 loginMessage.textContent="";
-
 loginMessage.classList.remove("show");
 
 }
@@ -558,7 +572,6 @@ loginMessage.classList.remove("show");
 if(loggedInMessage){
 
 loggedInMessage.textContent="";
-
 loggedInMessage.classList.remove("show");
 
 }
@@ -576,6 +589,10 @@ user.display_name ||
 user.username ||
 "マイページ";
 
+const username=
+user.username ||
+"";
+
 if(accountDisplayName){
 
 accountDisplayName.textContent=
@@ -586,7 +603,21 @@ displayName;
 if(accountUsername){
 
 accountUsername.textContent=
-user.username || "";
+"@"+username;
+
+}
+
+if(profileDisplayName){
+
+profileDisplayName.textContent=
+displayName;
+
+}
+
+if(profileUsername){
+
+profileUsername.textContent=
+"@"+username;
 
 }
 
@@ -669,9 +700,7 @@ mobileMenu.classList.remove("active");
 }
 
 if(!accountModal){
-
 return;
-
 }
 
 accountModal.classList.add("active");
@@ -691,6 +720,29 @@ checkLoginState();
 showAccountView("login");
 
 }
+
+}
+
+function openProfile(){
+
+const token=getToken();
+
+if(!token){
+showAccountView("login");
+return;
+}
+
+clearMessages();
+
+showAccountView("profile");
+
+}
+
+function backToAccount(){
+
+clearMessages();
+
+showAccountView("loggedin");
 
 }
 
@@ -726,6 +778,24 @@ if(accountClose){
 accountClose.addEventListener(
 "click",
 closeAccountModal
+);
+
+}
+
+if(openProfileButton){
+
+openProfileButton.addEventListener(
+"click",
+openProfile
+);
+
+}
+
+if(backAccountButton){
+
+backAccountButton.addEventListener(
+"click",
+backToAccount
 );
 
 }
