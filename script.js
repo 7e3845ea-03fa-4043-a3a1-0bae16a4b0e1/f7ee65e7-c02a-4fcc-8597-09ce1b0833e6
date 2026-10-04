@@ -34,13 +34,10 @@ renderDetail();
 console.error(error);
 
 if(addonList){
-
 addonList.innerHTML="";
-
 if(emptyState){
 emptyState.classList.add("show");
 }
-
 }
 
 }
@@ -54,13 +51,13 @@ return;
 }
 
 const keyword=searchInput
-?searchInput.value.toLowerCase().trim()
-:"";
+? searchInput.value.toLowerCase().trim()
+: "";
 
 const filtered=addons.filter(addon=>{
 
 const categoryMatch=
-currentCategory==="すべて"||
+currentCategory==="すべて" ||
 addon.category===currentCategory;
 
 const text=[
@@ -219,7 +216,6 @@ if(clearSearch){
 clearSearch.addEventListener("click",()=>{
 
 searchInput.value="";
-
 clearSearch.classList.remove("show");
 
 renderAddons();
@@ -407,6 +403,7 @@ const loginMessage=document.getElementById("loginMessage");
 const accountLoginView=document.getElementById("accountLoginView");
 const accountRegisterView=document.getElementById("accountRegisterView");
 const accountLoggedInView=document.getElementById("accountLoggedInView");
+const accountProfileView=document.getElementById("accountProfileView");
 
 const showRegisterButton=document.getElementById("showRegisterButton");
 const showLoginButton=document.getElementById("showLoginButton");
@@ -421,23 +418,13 @@ const loggedInMessage=document.getElementById("loggedInMessage");
 const openProfileButton=document.getElementById("openProfileButton");
 const backAccountButton=document.getElementById("backAccountButton");
 
-const accountProfileView=document.getElementById("accountProfileView");
-
-const profileDisplayNameInput=document.getElementById(
-"profileDisplayNameInput"
-);
-
-const displayNameForm=document.getElementById(
-"displayNameForm"
-);
-
-const profileMessage=document.getElementById(
-"profileMessage"
-);
+const displayNameForm=document.getElementById("displayNameForm");
+const profileDisplayNameInput=document.getElementById("profileDisplayNameInput");
+const profileMessage=document.getElementById("profileMessage");
 
 function getToken(){
 
-return localStorage.getItem("hac_account_token")||"";
+return localStorage.getItem("hac_account_token") || "";
 
 }
 
@@ -477,28 +464,36 @@ function showAccountView(view){
 if(accountLoginView){
 
 accountLoginView.style.display=
-view==="login"?"block":"none";
+view==="login"
+?"block"
+:"none";
 
 }
 
 if(accountRegisterView){
 
 accountRegisterView.style.display=
-view==="register"?"block":"none";
+view==="register"
+?"block"
+:"none";
 
 }
 
 if(accountLoggedInView){
 
 accountLoggedInView.style.display=
-view==="loggedin"?"block":"none";
+view==="loggedin"
+?"block"
+:"none";
 
 }
 
 if(accountProfileView){
 
 accountProfileView.style.display=
-view==="profile"?"block":"none";
+view==="profile"
+?"block"
+:"none";
 
 }
 
@@ -516,17 +511,7 @@ document.body.style.overflow="hidden";
 
 clearMessages();
 
-const token=getToken();
-
-if(token){
-
 checkLoginState();
-
-}else{
-
-showAccountView("login");
-
-}
 
 }
 
@@ -592,22 +577,33 @@ profileMessage.classList.add("show");
 
 function clearMessages(){
 
-[
-accountMessage,
-loginMessage,
-loggedInMessage,
-profileMessage
-].forEach(element=>{
+if(accountMessage){
 
-if(element){
-
-element.textContent="";
-
-element.classList.remove("show");
+accountMessage.textContent="";
+accountMessage.classList.remove("show");
 
 }
 
-});
+if(loginMessage){
+
+loginMessage.textContent="";
+loginMessage.classList.remove("show");
+
+}
+
+if(loggedInMessage){
+
+loggedInMessage.textContent="";
+loggedInMessage.classList.remove("show");
+
+}
+
+if(profileMessage){
+
+profileMessage.textContent="";
+profileMessage.classList.remove("show");
+
+}
 
 }
 
@@ -618,29 +614,20 @@ return;
 }
 
 const displayName=
-user.display_name||
-user.username||
+user.display_name ||
+user.username ||
 "マイページ";
 
 if(accountDisplayName){
-
-accountDisplayName.textContent=
-displayName;
-
+accountDisplayName.textContent=displayName;
 }
 
 if(accountUsername){
-
-accountUsername.textContent=
-user.username||"";
-
+accountUsername.textContent=user.username || "";
 }
 
 if(profileDisplayNameInput){
-
-profileDisplayNameInput.value=
-user.display_name||"";
-
+profileDisplayNameInput.value=displayName;
 }
 
 setAccountButtonText(displayName);
@@ -815,63 +802,13 @@ if(openProfileButton){
 
 openProfileButton.addEventListener(
 "click",
-async()=>{
+async ()=>{
 
 clearMessages();
 
-const token=getToken();
-
-if(!token){
-
-showAccountView("login");
-
-return;
-
-}
-
 showAccountView("profile");
 
-try{
-
-const response=await fetch(
-API_BASE+"/api/me",
-{
-method:"GET",
-headers:{
-"Authorization":"Bearer "+token
-}
-}
-);
-
-const data=await response.json();
-
-if(!response.ok||!data.user){
-
-setToken("");
-
-updateLoggedOutUser();
-
-return;
-
-}
-
-if(profileDisplayNameInput){
-
-profileDisplayNameInput.value=
-data.user.display_name||
-"";
-
-}
-
-}catch(error){
-
-console.error(error);
-
-showProfileMessage(
-"プロフィール情報の取得に失敗しました。"
-);
-
-}
+await checkLoginState();
 
 }
 );
@@ -901,40 +838,25 @@ async event=>{
 
 event.preventDefault();
 
-const usernameElement=
-document.getElementById("registerUsername");
-
-const displayNameElement=
-document.getElementById("registerDisplayName");
-
-const passwordElement=
-document.getElementById("registerPassword");
-
-const passwordConfirmElement=
-document.getElementById("registerPasswordConfirm");
-
-if(
-!usernameElement||
-!displayNameElement||
-!passwordElement||
-!passwordConfirmElement
-){
-
-return;
-
-}
-
 const username=
-usernameElement.value.trim();
+document.getElementById(
+"registerUsername"
+).value.trim();
 
 const displayName=
-displayNameElement.value.trim();
+document.getElementById(
+"registerDisplayName"
+).value.trim();
 
 const password=
-passwordElement.value;
+document.getElementById(
+"registerPassword"
+).value;
 
 const passwordConfirm=
-passwordConfirmElement.value;
+document.getElementById(
+"registerPasswordConfirm"
+).value;
 
 const submitButton=
 registerForm.querySelector(
@@ -955,16 +877,6 @@ if(!displayName){
 
 showAccountMessage(
 "表示名を入力してください。"
-);
-
-return;
-
-}
-
-if(displayName.length>30){
-
-showAccountMessage(
-"表示名は30文字以内にしてください。"
 );
 
 return;
@@ -1001,13 +913,9 @@ return;
 
 }
 
-if(submitButton){
-
 submitButton.disabled=true;
 
 submitButton.textContent="作成中...";
-
-}
 
 showAccountMessage(
 "アカウントを作成しています..."
@@ -1035,7 +943,7 @@ const data=await response.json();
 if(!response.ok){
 
 throw new Error(
-data.error||
+data.error ||
 "アカウントを作成できませんでした。"
 );
 
@@ -1061,20 +969,16 @@ clearMessages();
 }catch(error){
 
 showAccountMessage(
-error.message||
+error.message ||
 "通信エラーが発生しました。"
 );
 
 }finally{
 
-if(submitButton){
-
 submitButton.disabled=false;
 
 submitButton.textContent=
 "アカウントを作成";
-
-}
 
 }
 
@@ -1091,23 +995,15 @@ async event=>{
 
 event.preventDefault();
 
-const usernameElement=
-document.getElementById("loginUsername");
-
-const passwordElement=
-document.getElementById("loginPassword");
-
-if(!usernameElement||!passwordElement){
-
-return;
-
-}
-
 const username=
-usernameElement.value.trim();
+document.getElementById(
+"loginUsername"
+).value.trim();
 
 const password=
-passwordElement.value;
+document.getElementById(
+"loginPassword"
+).value;
 
 const submitButton=
 loginForm.querySelector(
@@ -1134,14 +1030,10 @@ return;
 
 }
 
-if(submitButton){
-
 submitButton.disabled=true;
 
 submitButton.textContent=
 "ログイン中...";
-
-}
 
 showLoginMessage(
 "ログインしています..."
@@ -1168,7 +1060,7 @@ const data=await response.json();
 if(!response.ok){
 
 throw new Error(
-data.error||
+data.error ||
 "ログインできませんでした。"
 );
 
@@ -1203,20 +1095,16 @@ await checkLoginState();
 }catch(error){
 
 showLoginMessage(
-error.message||
+error.message ||
 "通信エラーが発生しました。"
 );
 
 }finally{
 
-if(submitButton){
-
 submitButton.disabled=false;
 
 submitButton.textContent=
 "ログイン";
-
-}
 
 }
 
@@ -1237,16 +1125,8 @@ const token=getToken();
 
 if(!token){
 
-showAccountView("login");
-
-return;
-
-}
-
-if(!profileDisplayNameInput){
-
 showProfileMessage(
-"表示名入力欄が見つかりません。"
+"ログインしてください。"
 );
 
 return;
@@ -1254,7 +1134,9 @@ return;
 }
 
 const displayName=
-profileDisplayNameInput.value.trim();
+profileDisplayNameInput
+? profileDisplayNameInput.value.trim()
+: "";
 
 const submitButton=
 displayNameForm.querySelector(
@@ -1281,14 +1163,10 @@ return;
 
 }
 
-if(submitButton){
-
 submitButton.disabled=true;
 
 submitButton.textContent=
 "保存中...";
-
-}
 
 showProfileMessage(
 "保存しています..."
@@ -1315,8 +1193,8 @@ const data=await response.json();
 if(!response.ok){
 
 throw new Error(
-data.error||
-"プロフィールを保存できませんでした。"
+data.error ||
+"表示名を保存できませんでした。"
 );
 
 }
@@ -1327,29 +1205,23 @@ updateLoggedInUser(data.user);
 
 }
 
-showAccountView("profile");
-
 showProfileMessage(
-"プロフィールを保存しました！"
+"保存しました！"
 );
 
 }catch(error){
 
 showProfileMessage(
-error.message||
+error.message ||
 "通信エラーが発生しました。"
 );
 
 }finally{
 
-if(submitButton){
-
 submitButton.disabled=false;
 
 submitButton.textContent=
 "保存";
-
-}
 
 }
 
@@ -1362,7 +1234,7 @@ if(logoutButton){
 
 logoutButton.addEventListener(
 "click",
-async()=>{
+async ()=>{
 
 const token=getToken();
 
@@ -1416,8 +1288,8 @@ document.addEventListener(
 event=>{
 
 if(
-event.key==="Escape"&&
-accountModal&&
+event.key==="Escape" &&
+accountModal &&
 accountModal.classList.contains("active")
 ){
 
