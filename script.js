@@ -55,7 +55,7 @@ const keyword=searchInput
 const filtered=addons.filter(addon=>{
 
 const categoryMatch=
-currentCategory==="すべて" ||
+currentCategory==="すべて"||
 addon.category===currentCategory;
 
 const text=[
@@ -396,9 +396,13 @@ const loginMessage=document.getElementById("loginMessage");
 const accountLoginView=document.getElementById("accountLoginView");
 const accountRegisterView=document.getElementById("accountRegisterView");
 const accountLoggedInView=document.getElementById("accountLoggedInView");
+const accountProfileView=document.getElementById("accountProfileView");
 
 const showRegisterButton=document.getElementById("showRegisterButton");
 const showLoginButton=document.getElementById("showLoginButton");
+
+const openProfileButton=document.getElementById("openProfileButton");
+const backAccountButton=document.getElementById("backAccountButton");
 
 const logoutButton=document.getElementById("logoutButton");
 
@@ -407,17 +411,13 @@ const accountUsername=document.getElementById("accountUsername");
 
 const loggedInMessage=document.getElementById("loggedInMessage");
 
-const openProfileButton=document.getElementById("openProfileButton");
-const backAccountButton=document.getElementById("backAccountButton");
-
-const accountProfileView=document.getElementById("accountProfileView");
 const displayNameForm=document.getElementById("displayNameForm");
 const displayNameInput=document.getElementById("displayNameInput");
 const displayNameMessage=document.getElementById("displayNameMessage");
 
 function getToken(){
 
-return localStorage.getItem("hac_account_token") || "";
+return localStorage.getItem("hac_account_token")||"";
 
 }
 
@@ -457,36 +457,28 @@ function showAccountView(view){
 if(accountLoginView){
 
 accountLoginView.style.display=
-view==="login"
-?"block"
-:"none";
+view==="login"?"block":"none";
 
 }
 
 if(accountRegisterView){
 
 accountRegisterView.style.display=
-view==="register"
-?"block"
-:"none";
+view==="register"?"block":"none";
 
 }
 
 if(accountLoggedInView){
 
 accountLoggedInView.style.display=
-view==="loggedin"
-?"block"
-:"none";
+view==="loggedin"?"block":"none";
 
 }
 
 if(accountProfileView){
 
 accountProfileView.style.display=
-view==="profile"
-?"block"
-:"none";
+view==="profile"?"block":"none";
 
 }
 
@@ -603,8 +595,8 @@ return;
 }
 
 const displayName=
-user.display_name ||
-user.username ||
+user.display_name||
+user.username||
 "マイページ";
 
 if(accountDisplayName){
@@ -617,15 +609,15 @@ displayName;
 if(accountUsername){
 
 accountUsername.textContent=
-"@"+(user.username || "");
+"@"+(user.username||"");
 
 }
 
 if(displayNameInput){
 
 displayNameInput.value=
-user.display_name ||
-user.username ||
+user.display_name||
+user.username||
 "";
 
 }
@@ -651,6 +643,7 @@ const token=getToken();
 if(!token){
 
 updateLoggedOutUser();
+
 return null;
 
 }
@@ -704,7 +697,9 @@ return null;
 function openMyPage(){
 
 if(mobileMenu){
+
 mobileMenu.classList.remove("active");
+
 }
 
 if(!accountModal){
@@ -809,6 +804,15 @@ const user=await checkLoginState();
 
 if(user){
 
+if(displayNameInput){
+
+displayNameInput.value=
+user.display_name||
+user.username||
+"";
+
+}
+
 showAccountView("profile");
 
 }
@@ -883,7 +887,12 @@ displayNameForm.querySelector(
 "button[type='submit']"
 );
 
+if(!submitButton){
+return;
+}
+
 submitButton.disabled=true;
+
 submitButton.textContent="保存中...";
 
 showDisplayNameMessage(
@@ -911,7 +920,7 @@ const data=await response.json();
 if(!response.ok){
 
 throw new Error(
-data.error ||
+data.error||
 "プロフィールを保存できませんでした。"
 );
 
@@ -923,14 +932,18 @@ updateLoggedInUser(data.user);
 
 }
 
+showAccountView("profile");
+
 showDisplayNameMessage(
 "プロフィールを保存しました！"
 );
 
 }catch(error){
 
+console.error(error);
+
 showDisplayNameMessage(
-error.message ||
+error.message||
 "通信エラーが発生しました。"
 );
 
@@ -1030,6 +1043,7 @@ return;
 }
 
 submitButton.disabled=true;
+
 submitButton.textContent="作成中...";
 
 showAccountMessage(
@@ -1058,7 +1072,7 @@ const data=await response.json();
 if(!response.ok){
 
 throw new Error(
-data.error ||
+data.error||
 "アカウントを作成できませんでした。"
 );
 
@@ -1074,6 +1088,7 @@ setTimeout(
 ()=>{
 
 showAccountView("login");
+
 clearMessages();
 
 },
@@ -1083,7 +1098,7 @@ clearMessages();
 }catch(error){
 
 showAccountMessage(
-error.message ||
+error.message||
 "通信エラーが発生しました。"
 );
 
@@ -1145,7 +1160,9 @@ return;
 }
 
 submitButton.disabled=true;
-submitButton.textContent="ログイン中...";
+
+submitButton.textContent=
+"ログイン中...";
 
 showLoginMessage(
 "ログインしています..."
@@ -1172,7 +1189,7 @@ const data=await response.json();
 if(!response.ok){
 
 throw new Error(
-data.error ||
+data.error||
 "ログインできませんでした。"
 );
 
@@ -1207,14 +1224,16 @@ await checkLoginState();
 }catch(error){
 
 showLoginMessage(
-error.message ||
+error.message||
 "通信エラーが発生しました。"
 );
 
 }finally{
 
 submitButton.disabled=false;
-submitButton.textContent="ログイン";
+
+submitButton.textContent=
+"ログイン";
 
 }
 
@@ -1232,7 +1251,9 @@ async()=>{
 const token=getToken();
 
 logoutButton.disabled=true;
-logoutButton.textContent="ログアウト中...";
+
+logoutButton.textContent=
+"ログアウト中...";
 
 try{
 
@@ -1263,7 +1284,9 @@ updateLoggedOutUser();
 clearMessages();
 
 logoutButton.disabled=false;
-logoutButton.textContent="ログアウト";
+
+logoutButton.textContent=
+"ログアウト";
 
 }
 
@@ -1277,8 +1300,8 @@ document.addEventListener(
 event=>{
 
 if(
-event.key==="Escape" &&
-accountModal &&
+event.key==="Escape"&&
+accountModal&&
 accountModal.classList.contains("active")
 ){
 
