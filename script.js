@@ -507,32 +507,6 @@ view==="profile"?"block":"none";
 
 }
 
-function openAccountModal(){
-
-if(!accountModal){
-return;
-}
-
-accountModal.classList.add("active");
-
-document.body.style.overflow="hidden";
-
-clearMessages();
-
-const token=getToken();
-
-if(token){
-
-checkLoginState(true);
-
-}else{
-
-showAccountView("login");
-
-}
-
-}
-
 function closeAccountModal(){
 
 if(!accountModal){
@@ -856,46 +830,20 @@ return;
 
 showAccountView("profile");
 
-try{
+const user=await checkLoginState(false);
 
-const response=await fetch(
-API_BASE+"/api/me",
-{
-method:"GET",
-headers:{
-"Authorization":"Bearer "+token
-}
-}
-);
-
-const data=await response.json();
-
-if(!response.ok||!data.user){
-
-setToken("");
-
-updateLoggedOutUser();
+if(!user){
 
 return;
 
 }
 
 updateLoggedInUser(
-data.user,
+user,
 false
 );
 
 showAccountView("profile");
-
-}catch(error){
-
-console.error(error);
-
-showProfileMessage(
-"プロフィール情報の取得に失敗しました。"
-);
-
-}
 
 }
 );
@@ -1028,7 +976,6 @@ return;
 if(submitButton){
 
 submitButton.disabled=true;
-
 submitButton.textContent="作成中...";
 
 }
@@ -1065,17 +1012,11 @@ data.error||
 
 }
 
-if(!data.token){
-
-throw new Error(
-"ログイン情報を取得できませんでした。"
-);
-
-}
+if(data.token){
 
 setToken(data.token);
 
-registerForm.reset();
+}
 
 if(data.user){
 
@@ -1084,17 +1025,29 @@ data.user,
 true
 );
 
-clearMessages();
-
 showLoggedInMessage(
-"アカウントを作成してログインしました！"
+"アカウントを作成しました！"
 );
 
 }else{
 
-await checkLoginState(true);
+const user=await checkLoginState(true);
+
+if(user){
+
+showLoggedInMessage(
+"アカウントを作成しました！"
+);
+
+}else{
+
+showAccountView("login");
 
 }
+
+}
+
+registerForm.reset();
 
 }catch(error){
 
@@ -1108,9 +1061,7 @@ error.message||
 if(submitButton){
 
 submitButton.disabled=false;
-
-submitButton.textContent=
-"アカウントを作成";
+submitButton.textContent="アカウントを作成";
 
 }
 
@@ -1175,9 +1126,7 @@ return;
 if(submitButton){
 
 submitButton.disabled=true;
-
-submitButton.textContent=
-"ログイン中...";
+submitButton.textContent="ログイン中...";
 
 }
 
@@ -1231,8 +1180,6 @@ data.user,
 true
 );
 
-clearMessages();
-
 showLoggedInMessage(
 "ログインしました！"
 );
@@ -1255,9 +1202,7 @@ error.message||
 if(submitButton){
 
 submitButton.disabled=false;
-
-submitButton.textContent=
-"ログイン";
+submitButton.textContent="ログイン";
 
 }
 
@@ -1279,6 +1224,10 @@ event.preventDefault();
 const token=getToken();
 
 if(!token){
+
+showProfileMessage(
+"ログインしてください。"
+);
 
 showAccountView("login");
 
@@ -1343,9 +1292,7 @@ return;
 if(submitButton){
 
 submitButton.disabled=true;
-
-submitButton.textContent=
-"保存中...";
+submitButton.textContent="保存中...";
 
 }
 
@@ -1364,7 +1311,7 @@ headers:{
 "Authorization":"Bearer "+token
 },
 body:JSON.stringify({
-username,
+username:username,
 display_name:displayName
 })
 }
@@ -1381,6 +1328,12 @@ data.error||
 
 }
 
+if(data.token){
+
+setToken(data.token);
+
+}
+
 if(data.user){
 
 updateLoggedInUser(
@@ -1389,10 +1342,6 @@ false
 );
 
 }
-
-showAccountView("profile");
-
-clearMessages();
 
 showProfileMessage(
 "プロフィールを保存しました！"
@@ -1410,9 +1359,7 @@ error.message||
 if(submitButton){
 
 submitButton.disabled=false;
-
-submitButton.textContent=
-"保存";
+submitButton.textContent="保存";
 
 }
 
@@ -1432,9 +1379,7 @@ async()=>{
 const token=getToken();
 
 logoutButton.disabled=true;
-
-logoutButton.textContent=
-"ログアウト中...";
+logoutButton.textContent="ログアウト中...";
 
 try{
 
@@ -1465,9 +1410,7 @@ updateLoggedOutUser();
 clearMessages();
 
 logoutButton.disabled=false;
-
-logoutButton.textContent=
-"ログアウト";
+logoutButton.textContent="ログアウト";
 
 }
 
