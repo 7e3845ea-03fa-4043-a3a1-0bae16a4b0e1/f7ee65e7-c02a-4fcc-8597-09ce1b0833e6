@@ -34,8 +34,13 @@ renderDetail();
 console.error(error);
 
 if(addonList){
+
 addonList.innerHTML="";
+
+if(emptyState){
 emptyState.classList.add("show");
+}
+
 }
 
 }
@@ -77,13 +82,18 @@ count.textContent=filtered.length+"件";
 if(filtered.length===0){
 
 addonList.innerHTML="";
+
+if(emptyState){
 emptyState.classList.add("show");
+}
 
 return;
 
 }
 
+if(emptyState){
 emptyState.classList.remove("show");
+}
 
 addonList.innerHTML=filtered.map(addon=>`
 
@@ -190,11 +200,15 @@ searchInput.addEventListener("input",()=>{
 
 if(searchInput.value){
 
+if(clearSearch){
 clearSearch.classList.add("show");
+}
 
 }else{
 
+if(clearSearch){
 clearSearch.classList.remove("show");
+}
 
 }
 
@@ -208,12 +222,17 @@ if(clearSearch){
 
 clearSearch.addEventListener("click",()=>{
 
+if(searchInput){
 searchInput.value="";
+}
+
 clearSearch.classList.remove("show");
 
 renderAddons();
 
+if(searchInput){
 searchInput.focus();
+}
 
 });
 
@@ -396,13 +415,9 @@ const loginMessage=document.getElementById("loginMessage");
 const accountLoginView=document.getElementById("accountLoginView");
 const accountRegisterView=document.getElementById("accountRegisterView");
 const accountLoggedInView=document.getElementById("accountLoggedInView");
-const accountProfileView=document.getElementById("accountProfileView");
 
 const showRegisterButton=document.getElementById("showRegisterButton");
 const showLoginButton=document.getElementById("showLoginButton");
-
-const openProfileButton=document.getElementById("openProfileButton");
-const backAccountButton=document.getElementById("backAccountButton");
 
 const logoutButton=document.getElementById("logoutButton");
 
@@ -411,9 +426,18 @@ const accountUsername=document.getElementById("accountUsername");
 
 const loggedInMessage=document.getElementById("loggedInMessage");
 
+const openProfileButton=document.getElementById("openProfileButton");
+const backAccountButton=document.getElementById("backAccountButton");
+
+const accountProfileView=document.getElementById("accountProfileView");
+
 const displayNameForm=document.getElementById("displayNameForm");
-const displayNameInput=document.getElementById("displayNameInput");
-const displayNameMessage=document.getElementById("displayNameMessage");
+
+const displayNameInput=
+document.getElementById("profileDisplayNameInput");
+
+const displayNameMessage=
+document.getElementById("profileMessage");
 
 function getToken(){
 
@@ -457,28 +481,36 @@ function showAccountView(view){
 if(accountLoginView){
 
 accountLoginView.style.display=
-view==="login"?"block":"none";
+view==="login"
+?"block"
+:"none";
 
 }
 
 if(accountRegisterView){
 
 accountRegisterView.style.display=
-view==="register"?"block":"none";
+view==="register"
+?"block"
+:"none";
 
 }
 
 if(accountLoggedInView){
 
 accountLoggedInView.style.display=
-view==="loggedin"?"block":"none";
+view==="loggedin"
+?"block"
+:"none";
 
 }
 
 if(accountProfileView){
 
 accountProfileView.style.display=
-view==="profile"?"block":"none";
+view==="profile"
+?"block"
+:"none";
 
 }
 
@@ -496,7 +528,17 @@ document.body.style.overflow="hidden";
 
 clearMessages();
 
+const token=getToken();
+
+if(token){
+
 checkLoginState();
+
+}else{
+
+showAccountView("login");
+
+}
 
 }
 
@@ -519,6 +561,7 @@ return;
 }
 
 accountMessage.textContent=message;
+
 accountMessage.classList.add("show");
 
 }
@@ -530,6 +573,7 @@ return;
 }
 
 loginMessage.textContent=message;
+
 loginMessage.classList.add("show");
 
 }
@@ -541,17 +585,19 @@ return;
 }
 
 loggedInMessage.textContent=message;
+
 loggedInMessage.classList.add("show");
 
 }
 
-function showDisplayNameMessage(message){
+function showProfileMessage(message){
 
 if(!displayNameMessage){
 return;
 }
 
 displayNameMessage.textContent=message;
+
 displayNameMessage.classList.add("show");
 
 }
@@ -561,6 +607,7 @@ function clearMessages(){
 if(accountMessage){
 
 accountMessage.textContent="";
+
 accountMessage.classList.remove("show");
 
 }
@@ -568,6 +615,7 @@ accountMessage.classList.remove("show");
 if(loginMessage){
 
 loginMessage.textContent="";
+
 loginMessage.classList.remove("show");
 
 }
@@ -575,6 +623,7 @@ loginMessage.classList.remove("show");
 if(loggedInMessage){
 
 loggedInMessage.textContent="";
+
 loggedInMessage.classList.remove("show");
 
 }
@@ -582,6 +631,7 @@ loggedInMessage.classList.remove("show");
 if(displayNameMessage){
 
 displayNameMessage.textContent="";
+
 displayNameMessage.classList.remove("show");
 
 }
@@ -609,7 +659,7 @@ displayName;
 if(accountUsername){
 
 accountUsername.textContent=
-"@"+(user.username||"");
+user.username||"";
 
 }
 
@@ -644,7 +694,7 @@ if(!token){
 
 updateLoggedOutUser();
 
-return null;
+return;
 
 }
 
@@ -665,9 +715,10 @@ const data=await response.json();
 if(!response.ok){
 
 setToken("");
+
 updateLoggedOutUser();
 
-return null;
+return;
 
 }
 
@@ -675,20 +726,17 @@ if(data.user){
 
 updateLoggedInUser(data.user);
 
-return data.user;
-
-}
+}else{
 
 setToken("");
+
 updateLoggedOutUser();
 
-return null;
+}
 
 }catch(error){
 
 console.error(error);
-
-return null;
 
 }
 
@@ -800,20 +848,68 @@ async()=>{
 
 clearMessages();
 
-const user=await checkLoginState();
+const token=getToken();
 
-if(user){
+if(!token){
 
-if(displayNameInput){
+showAccountView("login");
 
-displayNameInput.value=
-user.display_name||
-user.username||
-"";
+return;
 
 }
 
 showAccountView("profile");
+
+if(displayNameInput){
+
+displayNameInput.value="";
+
+}
+
+try{
+
+const response=await fetch(
+API_BASE+"/api/me",
+{
+method:"GET",
+headers:{
+"Authorization":"Bearer "+token
+}
+}
+);
+
+const data=await response.json();
+
+if(!response.ok){
+
+setToken("");
+
+showAccountView("login");
+
+return;
+
+}
+
+if(data.user){
+
+if(displayNameInput){
+
+displayNameInput.value=
+data.user.display_name||
+data.user.username||
+"";
+
+}
+
+}
+
+}catch(error){
+
+console.error(error);
+
+showProfileMessage(
+"プロフィール情報を取得できませんでした。"
+);
 
 }
 
@@ -849,9 +945,7 @@ const token=getToken();
 
 if(!token){
 
-showDisplayNameMessage(
-"ログインしてください。"
-);
+showAccountView("login");
 
 return;
 
@@ -864,7 +958,7 @@ displayNameInput
 
 if(!displayName){
 
-showDisplayNameMessage(
+showProfileMessage(
 "表示名を入力してください。"
 );
 
@@ -874,7 +968,7 @@ return;
 
 if(displayName.length>30){
 
-showDisplayNameMessage(
+showProfileMessage(
 "表示名は30文字以内にしてください。"
 );
 
@@ -893,10 +987,11 @@ return;
 
 submitButton.disabled=true;
 
-submitButton.textContent="保存中...";
+submitButton.textContent=
+"保存中...";
 
-showDisplayNameMessage(
-"保存しています..."
+showProfileMessage(
+"表示名を保存しています..."
 );
 
 try{
@@ -919,30 +1014,40 @@ const data=await response.json();
 
 if(!response.ok){
 
+if(response.status===401){
+
+setToken("");
+
+showAccountView("login");
+
+throw new Error(
+"ログインの有効期限が切れています。"
+);
+
+}
+
 throw new Error(
 data.error||
-"プロフィールを保存できませんでした。"
+"表示名を保存できませんでした。"
 );
 
 }
 
 if(data.user){
 
-updateLoggedInUser(data.user);
+updateLoggedInUser(
+data.user
+);
 
 }
 
-showAccountView("profile");
-
-showDisplayNameMessage(
-"プロフィールを保存しました！"
+showProfileMessage(
+"表示名を保存しました！"
 );
 
 }catch(error){
 
-console.error(error);
-
-showDisplayNameMessage(
+showProfileMessage(
 error.message||
 "通信エラーが発生しました。"
 );
@@ -950,7 +1055,9 @@ error.message||
 }finally{
 
 submitButton.disabled=false;
-submitButton.textContent="保存";
+
+submitButton.textContent=
+"表示名を保存";
 
 }
 
