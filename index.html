@@ -21,7 +21,7 @@
 <a class="active" href="./">ホーム</a>
 <a href="#addons">アドオン</a>
 <a href="#categories">カテゴリ</a>
-<button class="account-button" id="accountButton" type="button">マイページ</button>
+<button class="account-button" id="accountButton" type="button">アカウント</button>
 </nav>
 
 <button class="menu-button" id="menuButton" aria-label="メニュー">
@@ -37,7 +37,7 @@
 <a href="./">ホーム</a>
 <a href="#addons">アドオン</a>
 <a href="#categories">カテゴリ</a>
-<button class="mobile-account-button" id="mobileAccountButton" type="button">マイページ</button>
+<button class="mobile-account-button" id="mobileAccountButton" type="button">アカウント</button>
 </div>
 
 <main>
@@ -410,65 +410,58 @@ style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;backg
 
 <div id="accountLoggedInView" style="display:none;">
 
-<div class="profile-header">
+<div style="display:flex;align-items:center;gap:14px;margin:20px 0 22px;">
 
-<div class="profile-avatar" id="accountAvatar">
+<div
+style="width:58px;height:58px;display:grid;place-items:center;background:#17181b;color:#fff;border-radius:16px;font-size:24px;font-weight:800;"
+id="accountAvatar"
+>
 H
 </div>
 
-<div class="profile-name-area">
+<div style="min-width:0;">
 
-<h2 id="accountDisplayName">
+<h2
+id="accountDisplayName"
+style="margin:0 0 4px;"
+>
 </h2>
 
 <div
-class="profile-username"
-id="accountUsername"
+style="font-size:12px;color:#999;"
+id="accountProfileUsername"
 >
-@username
 </div>
 
 </div>
 
-</div>
-
-<div class="profile-card">
-
-<div class="profile-card-title">
-アカウント情報
-</div>
-
-<div class="profile-row">
-
-<div class="profile-row-label">
-表示名
 </div>
 
 <div
-class="profile-row-value"
-id="profileDisplayName"
+style="padding:16px;background:#f5f5f6;border-radius:13px;margin-bottom:10px;"
 >
-</div>
 
-</div>
-
-<div class="profile-row">
-
-<div class="profile-row-label">
+<div
+style="font-size:10px;color:#aaa;margin-bottom:5px;"
+>
 ユーザーネーム
 </div>
 
 <div
-class="profile-row-value"
-id="profileUsername"
+id="accountUsername"
+style="font-size:14px;font-weight:600;color:#333;"
 >
 </div>
 
 </div>
 
-</div>
-
-<div class="profile-actions">
+<button
+type="button"
+id="openProfileButton"
+style="width:100%;padding:14px;border:0;border-radius:11px;background:#f3f3f4;color:#444;font-size:12px;margin-bottom:10px;"
+>
+マイページ
+</button>
 
 <button
 class="register-button"
@@ -478,12 +471,95 @@ type="button"
 ログアウト
 </button>
 
-</div>
-
 <div
 class="account-message"
 id="loggedInMessage"
 ></div>
+
+</div>
+
+<div id="accountProfileView" style="display:none;">
+
+<div
+style="display:flex;align-items:center;gap:14px;margin:20px 0 25px;"
+>
+
+<div
+id="profileAvatar"
+style="width:70px;height:70px;display:grid;place-items:center;background:#17181b;color:#fff;border-radius:20px;font-size:28px;font-weight:800;"
+>
+H
+</div>
+
+<div>
+
+<h2
+id="profileDisplayName"
+style="margin:0 0 5px;"
+>
+</h2>
+
+<div
+id="profileUsername"
+style="font-size:12px;color:#999;"
+>
+</div>
+
+</div>
+
+</div>
+
+<div
+style="padding:15px;background:#f5f5f6;border-radius:12px;margin-bottom:18px;"
+>
+
+<div
+style="font-size:10px;color:#aaa;margin-bottom:5px;"
+>
+ユーザーネーム
+</div>
+
+<div
+id="profileUsernameValue"
+style="font-size:14px;font-weight:600;color:#333;"
+>
+</div>
+
+</div>
+
+<form id="displayNameForm">
+
+<label>
+表示名を変更
+<input
+id="profileDisplayNameInput"
+type="text"
+maxlength="30"
+required
+>
+</label>
+
+<button
+class="register-button"
+type="submit"
+>
+表示名を保存
+</button>
+
+<div
+class="account-message"
+id="profileMessage"
+></div>
+
+</form>
+
+<button
+type="button"
+id="backAccountButton"
+style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;background:#f3f3f4;color:#555;font-size:12px;"
+>
+アカウント画面に戻る
+</button>
 
 </div>
 
