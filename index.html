@@ -1,527 +1,46 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#ffffff">
-<title>HAC Addons</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<header class="header">
-<div class="header-inner">
-
-<a href="./" class="logo">
-<span class="logo-icon">H</span>
-<span class="logo-text">HAC <b>Addons</b></span>
-</a>
-
-<nav class="nav">
-<a class="active" href="./">ホーム</a>
-<a href="#addons">アドオン</a>
-<a href="#categories">カテゴリ</a>
-<button class="account-button" id="accountButton" type="button">アカウント</button>
-</nav>
-
-<button class="menu-button" id="menuButton" aria-label="メニュー">
-<span></span>
-<span></span>
-<span></span>
-</button>
-
-</div>
-</header>
-
-<div class="mobile-menu" id="mobileMenu">
-<a href="./">ホーム</a>
-<a href="#addons">アドオン</a>
-<a href="#categories">カテゴリ</a>
-<button class="mobile-account-button" id="mobileAccountButton" type="button">アカウント</button>
-</div>
-
-<main>
-
-<section class="hero">
-<div class="hero-content">
-
-<div class="hero-label">
-Minecraft Bedrock Addons
-</div>
-
-<h1>
-Minecraftを<br>
-もっと<span>楽しく。</span>
-</h1>
-
-<p>
-Minecraft統合版で使えるアドオンを<br>
-かんたんに探してダウンロード。
-</p>
-
-<div class="search-box">
-
-<svg viewBox="0 0 24 24">
-<circle cx="11" cy="11" r="7"></circle>
-<path d="m20 20-4-4"></path>
-</svg>
-
-<input
-id="searchInput"
-type="search"
-placeholder="アドオンを検索..."
-autocomplete="off"
+<div
+id="accountProfileView"
+style="display:none;"
 >
-
-<button id="clearSearch" type="button">×</button>
-
-</div>
-
-</div>
-</section>
-
-<section class="section" id="categories">
-
-<div class="section-head">
-
-<div>
-<div class="section-label">CATEGORIES</div>
-<h2>カテゴリ</h2>
-</div>
-
-</div>
-
-<div class="category-list">
-
-<button class="category" data-category="すべて">
-<span class="category-icon">✦</span>
-<span>
-<strong>すべて</strong>
-<small>すべてのアドオン</small>
-</span>
-</button>
-
-<button class="category" data-category="家具">
-<span class="category-icon">▦</span>
-<span>
-<strong>家具</strong>
-<small>家具・インテリア</small>
-</span>
-</button>
-
-<button class="category" data-category="武器">
-<span class="category-icon">⚔</span>
-<span>
-<strong>武器</strong>
-<small>武器・戦闘</small>
-</span>
-</button>
-
-<button class="category" data-category="乗り物">
-<span class="category-icon">▱</span>
-<span>
-<strong>乗り物</strong>
-<small>車・鉄道など</small>
-</span>
-</button>
-
-<button class="category" data-category="ホラー">
-<span class="category-icon">◉</span>
-<span>
-<strong>ホラー</strong>
-<small>ホラー・恐怖</small>
-</span>
-</button>
-
-<button class="category" data-category="ミニゲーム">
-<span class="category-icon">▶</span>
-<span>
-<strong>ミニゲーム</strong>
-<small>ゲーム・遊び</small>
-</span>
-</button>
-
-<button class="category" data-category="その他">
-<span class="category-icon">＋</span>
-<span>
-<strong>その他</strong>
-<small>その他のアドオン</small>
-</span>
-</button>
-
-</div>
-</section>
-
-<section class="section" id="addons">
-
-<div class="section-head addon-head">
-
-<div>
-<div class="section-label">ADDONS</div>
-<h2>アドオン</h2>
-</div>
-
-<div class="count" id="count">0件</div>
-
-</div>
-
-<div class="filter-wrapper">
-
-<div class="filters">
-
-<button class="filter active" data-category="すべて">
-すべて
-</button>
-
-<button class="filter" data-category="家具">
-家具
-</button>
-
-<button class="filter" data-category="武器">
-武器
-</button>
-
-<button class="filter" data-category="乗り物">
-乗り物
-</button>
-
-<button class="filter" data-category="ホラー">
-ホラー
-</button>
-
-<button class="filter" data-category="ミニゲーム">
-ミニゲーム
-</button>
-
-<button class="filter" data-category="その他">
-その他
-</button>
-
-</div>
-</div>
-
-<div class="addon-grid" id="addonList"></div>
-
-<div class="empty" id="emptyState">
-
-<div class="empty-symbol">⌕</div>
-
-<h3>アドオンが見つかりません</h3>
-
-<p>検索条件を変更してみてください。</p>
-
-</div>
-
-</section>
-
-<section class="section about-section">
-
-<div class="about-card">
-
-<div class="about-logo">H</div>
-
-<div>
-
-<div class="section-label">ABOUT HAC ADDONS</div>
-
-<h2>お気に入りのアドオンを見つけよう。</h2>
-
-<p>
-HAC AddonsはMinecraft統合版向けのアドオンを
-見つけて、かんたんにダウンロードできる配布サイトです。
-</p>
-
-</div>
-</div>
-
-</section>
-
-</main>
-
-<footer>
-
-<div class="footer-inner">
-
-<a href="./" class="logo footer-logo">
-
-<span class="logo-icon">H</span>
-<span class="logo-text">HAC <b>Addons</b></span>
-
-</a>
-
-<span>© HAC Addons</span>
-
-</div>
-
-</footer>
-
-<div class="account-modal" id="accountModal">
-
-<div class="account-overlay" id="accountOverlay"></div>
-
-<div class="account-panel">
-
-<button
-class="account-close"
-id="accountClose"
-type="button"
-aria-label="閉じる"
->×</button>
-
-<div class="section-label">HAC ADDONS ACCOUNT</div>
-
-<div id="accountLoginView">
-
-<h2>ログイン</h2>
-
-<p class="account-description">
-HAC Addonsのアカウントにログインできます。
-</p>
-
-<form id="loginForm">
-
-<label>
-ユーザーネーム
-<input
-id="loginUsername"
-type="text"
-autocomplete="username"
-maxlength="20"
-pattern="[A-Za-z0-9_]{3,20}"
-required
->
-</label>
-
-<label>
-パスワード
-<input
-id="loginPassword"
-type="password"
-autocomplete="current-password"
-maxlength="128"
-required
->
-</label>
-
-<button
-class="register-button"
-type="submit"
->
-ログイン
-</button>
 
 <div
-class="account-message"
-id="loginMessage"
-></div>
-
-</form>
-
-<button
-type="button"
-id="showRegisterButton"
-style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;background:#f3f3f4;color:#555;font-size:12px;"
+style="
+padding:20px;
+border:1px solid #e7e7e8;
+border-radius:15px;
+background:#fafafa;
+margin-bottom:18px;
+"
 >
-アカウントを作成
-</button>
-
-</div>
-
-<div id="accountRegisterView" style="display:none;">
-
-<h2>アカウントを作成</h2>
-
-<p class="account-description">
-HAC Addonsのアカウントを作成できます。
-</p>
-
-<form id="registerForm">
-
-<label>
-ユーザーネーム
-<input
-id="registerUsername"
-type="text"
-autocomplete="username"
-maxlength="20"
-pattern="[A-Za-z0-9_]{3,20}"
-required
->
-</label>
-
-<label>
-表示名
-<input
-id="registerDisplayName"
-type="text"
-autocomplete="nickname"
-maxlength="30"
-required
->
-</label>
-
-<label>
-パスワード
-<input
-id="registerPassword"
-type="password"
-autocomplete="new-password"
-minlength="8"
-maxlength="128"
-required
->
-</label>
-
-<label>
-確認パスワード
-<input
-id="registerPasswordConfirm"
-type="password"
-autocomplete="new-password"
-minlength="8"
-maxlength="128"
-required
->
-</label>
-
-<button
-class="register-button"
-type="submit"
->
-アカウントを作成
-</button>
 
 <div
-class="account-message"
-id="accountMessage"
-></div>
-
-</form>
-
-<button
-type="button"
-id="showLoginButton"
-style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;background:#f3f3f4;color:#555;font-size:12px;"
+style="
+font-size:10px;
+font-weight:700;
+color:#aaa;
+margin-bottom:5px;
+"
 >
-ログインに戻る
-</button>
-
+プロフィール
 </div>
-
-<div id="accountLoggedInView" style="display:none;">
-
-<div style="display:flex;align-items:center;gap:14px;margin:20px 0 22px;">
 
 <div
-style="width:58px;height:58px;display:grid;place-items:center;background:#17181b;color:#fff;border-radius:16px;font-size:24px;font-weight:800;"
-id="accountAvatar"
->
-H
-</div>
-
-<div style="min-width:0;">
-
-<h2
 id="accountDisplayName"
-style="margin:0 0 4px;"
+style="
+font-size:24px;
+font-weight:800;
+letter-spacing:-.03em;
+"
 >
-</h2>
-
-<div
-style="font-size:12px;color:#999;"
-id="accountProfileUsername"
->
-</div>
-
-</div>
-
-</div>
-
-<div
-style="padding:16px;background:#f5f5f6;border-radius:13px;margin-bottom:10px;"
->
-
-<div
-style="font-size:10px;color:#aaa;margin-bottom:5px;"
->
-ユーザーネーム
 </div>
 
 <div
 id="accountUsername"
-style="font-size:14px;font-weight:600;color:#333;"
->
-</div>
-
-</div>
-
-<button
-type="button"
-id="openProfileButton"
-style="width:100%;padding:14px;border:0;border-radius:11px;background:#f3f3f4;color:#444;font-size:12px;margin-bottom:10px;"
->
-マイページ
-</button>
-
-<button
-class="register-button"
-id="logoutButton"
-type="button"
->
-ログアウト
-</button>
-
-<div
-class="account-message"
-id="loggedInMessage"
-></div>
-
-</div>
-
-<div id="accountProfileView" style="display:none;">
-
-<div
-style="display:flex;align-items:center;gap:14px;margin:20px 0 25px;"
->
-
-<div
-id="profileAvatar"
-style="width:70px;height:70px;display:grid;place-items:center;background:#17181b;color:#fff;border-radius:20px;font-size:28px;font-weight:800;"
->
-H
-</div>
-
-<div>
-
-<h2
-id="profileDisplayName"
-style="margin:0 0 5px;"
->
-</h2>
-
-<div
-id="profileUsername"
-style="font-size:12px;color:#999;"
->
-</div>
-
-</div>
-
-</div>
-
-<div
-style="padding:15px;background:#f5f5f6;border-radius:12px;margin-bottom:18px;"
->
-
-<div
-style="font-size:10px;color:#aaa;margin-bottom:5px;"
->
-ユーザーネーム
-</div>
-
-<div
-id="profileUsernameValue"
-style="font-size:14px;font-weight:600;color:#333;"
+style="
+font-size:13px;
+color:#999;
+margin-top:4px;
+"
 >
 </div>
 
@@ -530,43 +49,70 @@ style="font-size:14px;font-weight:600;color:#333;"
 <form id="displayNameForm">
 
 <label>
-表示名を変更
+表示名
+
 <input
 id="profileDisplayNameInput"
 type="text"
 maxlength="30"
-required
+autocomplete="nickname"
+placeholder="表示名"
 >
 </label>
 
-<button
-class="register-button"
-type="submit"
+<label>
+ユーザーネーム
+
+<input
+id="profileUsernameInput"
+type="text"
+maxlength="20"
+pattern="[A-Za-z0-9_]{3,20}"
+autocomplete="username"
+placeholder="ユーザーネーム"
 >
-表示名を保存
-</button>
+</label>
 
 <div
-class="account-message"
+style="
+font-size:11px;
+color:#aaa;
+margin-top:-7px;
+"
+>
+3〜20文字の英数字と_が使えます
+</div>
+
+<div
 id="profileMessage"
-></div>
+class="account-message"
+>
+</div>
+
+<button
+type="submit"
+class="register-button"
+>
+保存
+</button>
 
 </form>
 
 <button
-type="button"
 id="backAccountButton"
-style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;background:#f3f3f4;color:#555;font-size:12px;"
+type="button"
+style="
+width:100%;
+height:44px;
+margin-top:10px;
+border:0;
+border-radius:10px;
+background:#f3f3f4;
+color:#555;
+font-size:12px;
+"
 >
-アカウント画面に戻る
+戻る
 </button>
 
 </div>
-
-</div>
-</div>
-
-<script src="script.js"></script>
-
-</body>
-</html>
