@@ -426,17 +426,17 @@ const loggedInMessage=document.getElementById("loggedInMessage");
 const openProfileButton=document.getElementById("openProfileButton");
 const backAccountButton=document.getElementById("backAccountButton");
 
-const profileDisplayNameInput=document.getElementById(
-"profileDisplayNameInput"
-);
+const profileDisplayNameInput=
+document.getElementById("profileDisplayNameInput");
 
-const displayNameForm=document.getElementById(
-"displayNameForm"
-);
+const profileUsernameInput=
+document.getElementById("profileUsernameInput");
 
-const profileMessage=document.getElementById(
-"profileMessage"
-);
+const displayNameForm=
+document.getElementById("displayNameForm");
+
+const profileMessage=
+document.getElementById("profileMessage");
 
 function getToken(){
 
@@ -625,6 +625,10 @@ user.display_name||
 user.username||
 "マイページ";
 
+const username=
+user.username||
+"";
+
 if(accountDisplayName){
 
 accountDisplayName.textContent=
@@ -635,7 +639,7 @@ displayName;
 if(accountUsername){
 
 accountUsername.textContent=
-user.username||"";
+"@"+username;
 
 }
 
@@ -643,6 +647,13 @@ if(profileDisplayNameInput){
 
 profileDisplayNameInput.value=
 user.display_name||"";
+
+}
+
+if(profileUsernameInput){
+
+profileUsernameInput.value=
+user.username||"";
 
 }
 
@@ -1259,10 +1270,11 @@ return;
 
 }
 
-if(!profileDisplayNameInput){
+if(!profileDisplayNameInput||
+!profileUsernameInput){
 
 showProfileMessage(
-"表示名入力欄が見つかりません。"
+"プロフィール入力欄が見つかりません。"
 );
 
 return;
@@ -1272,10 +1284,23 @@ return;
 const displayName=
 profileDisplayNameInput.value.trim();
 
+const username=
+profileUsernameInput.value.trim();
+
 const submitButton=
 displayNameForm.querySelector(
 "button[type='submit']"
 );
+
+if(!/^[A-Za-z0-9_]{3,20}$/.test(username)){
+
+showProfileMessage(
+"ユーザーネームは3〜20文字の英数字と_のみ使用できます。"
+);
+
+return;
+
+}
 
 if(!displayName){
 
@@ -1321,6 +1346,7 @@ headers:{
 "Authorization":"Bearer "+token
 },
 body:JSON.stringify({
+username,
 display_name:displayName
 })
 }
