@@ -410,27 +410,65 @@ style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;backg
 
 <div id="accountLoggedInView" style="display:none;">
 
-<h2 id="accountDisplayName"></h2>
+<div class="profile-header">
 
-<p class="account-description">
-マイページ
-</p>
+<div class="profile-avatar" id="accountAvatar">
+H
+</div>
+
+<div class="profile-name-area">
+
+<h2 id="accountDisplayName">
+</h2>
 
 <div
-style="padding:14px;background:#f5f5f6;border-radius:11px;margin-bottom:14px;"
+class="profile-username"
+id="accountUsername"
 >
+@username
+</div>
+
+</div>
+
+</div>
+
+<div class="profile-card">
+
+<div class="profile-card-title">
+アカウント情報
+</div>
+
+<div class="profile-row">
+
+<div class="profile-row-label">
+表示名
+</div>
+
 <div
-style="font-size:10px;color:#aaa;margin-bottom:5px;"
+class="profile-row-value"
+id="profileDisplayName"
 >
+</div>
+
+</div>
+
+<div class="profile-row">
+
+<div class="profile-row-label">
 ユーザーネーム
 </div>
 
 <div
-id="accountUsername"
-style="font-size:14px;font-weight:600;color:#333;"
+class="profile-row-value"
+id="profileUsername"
 >
 </div>
+
 </div>
+
+</div>
+
+<div class="profile-actions">
 
 <button
 class="register-button"
@@ -439,6 +477,8 @@ type="button"
 >
 ログアウト
 </button>
+
+</div>
 
 <div
 class="account-message"
