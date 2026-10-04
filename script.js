@@ -49,13 +49,13 @@ return;
 }
 
 const keyword=searchInput
-? searchInput.value.toLowerCase().trim()
-: "";
+?searchInput.value.toLowerCase().trim()
+:"";
 
 const filtered=addons.filter(addon=>{
 
 const categoryMatch=
-currentCategory==="すべて" ||
+currentCategory==="すべて"||
 addon.category===currentCategory;
 
 const text=[
@@ -70,18 +70,25 @@ return categoryMatch&&text.includes(keyword);
 
 });
 
+if(count){
 count.textContent=filtered.length+"件";
+}
 
 if(filtered.length===0){
 
 addonList.innerHTML="";
+
+if(emptyState){
 emptyState.classList.add("show");
+}
 
 return;
 
 }
 
+if(emptyState){
 emptyState.classList.remove("show");
+}
 
 addonList.innerHTML=filtered.map(addon=>`
 
@@ -186,6 +193,8 @@ if(searchInput){
 
 searchInput.addEventListener("input",()=>{
 
+if(clearSearch){
+
 if(searchInput.value){
 
 clearSearch.classList.add("show");
@@ -193,6 +202,8 @@ clearSearch.classList.add("show");
 }else{
 
 clearSearch.classList.remove("show");
+
+}
 
 }
 
@@ -414,7 +425,7 @@ const loggedInMessage=document.getElementById("loggedInMessage");
 
 function getToken(){
 
-return localStorage.getItem("hac_account_token") || "";
+return localStorage.getItem("hac_account_token")||"";
 
 }
 
@@ -524,7 +535,6 @@ return;
 }
 
 accountMessage.textContent=message;
-
 accountMessage.classList.add("show");
 
 }
@@ -536,7 +546,6 @@ return;
 }
 
 loginMessage.textContent=message;
-
 loginMessage.classList.add("show");
 
 }
@@ -548,7 +557,6 @@ return;
 }
 
 loggedInMessage.textContent=message;
-
 loggedInMessage.classList.add("show");
 
 }
@@ -585,12 +593,12 @@ return;
 }
 
 const displayName=
-user.display_name ||
-user.username ||
+user.display_name||
+user.username||
 "マイページ";
 
 const username=
-user.username ||
+user.username||
 "";
 
 if(accountDisplayName){
@@ -700,7 +708,11 @@ mobileMenu.classList.remove("active");
 }
 
 if(!accountModal){
+
+console.error("accountModalが見つかりません");
+
 return;
+
 }
 
 accountModal.classList.add("active");
@@ -712,6 +724,8 @@ clearMessages();
 const token=getToken();
 
 if(token){
+
+showAccountView("loggedin");
 
 checkLoginState();
 
@@ -728,8 +742,11 @@ function openProfile(){
 const token=getToken();
 
 if(!token){
+
 showAccountView("login");
+
 return;
+
 }
 
 clearMessages();
@@ -746,23 +763,43 @@ showAccountView("loggedin");
 
 }
 
-if(accountButton){
+document.addEventListener("click",event=>{
 
-accountButton.addEventListener(
-"click",
-openMyPage
-);
+const target=event.target;
+
+if(!(target instanceof Element)){
+return;
+}
+
+const accountButtonElement=
+target.closest("#accountButton");
+
+const mobileAccountButtonElement=
+target.closest("#mobileAccountButton");
+
+if(accountButtonElement){
+
+event.preventDefault();
+event.stopPropagation();
+
+openMyPage();
+
+return;
 
 }
 
-if(mobileAccountButton){
+if(mobileAccountButtonElement){
 
-mobileAccountButton.addEventListener(
-"click",
-openMyPage
-);
+event.preventDefault();
+event.stopPropagation();
+
+openMyPage();
+
+return;
 
 }
+
+});
 
 if(accountOverlay){
 
@@ -943,7 +980,7 @@ const data=await response.json();
 if(!response.ok){
 
 throw new Error(
-data.error ||
+data.error||
 "アカウントを作成できませんでした。"
 );
 
@@ -969,7 +1006,7 @@ clearMessages();
 }catch(error){
 
 showAccountMessage(
-error.message ||
+error.message||
 "通信エラーが発生しました。"
 );
 
@@ -1060,7 +1097,7 @@ const data=await response.json();
 if(!response.ok){
 
 throw new Error(
-data.error ||
+data.error||
 "ログインできませんでした。"
 );
 
@@ -1095,7 +1132,7 @@ await checkLoginState();
 }catch(error){
 
 showLoginMessage(
-error.message ||
+error.message||
 "通信エラーが発生しました。"
 );
 
@@ -1171,8 +1208,8 @@ document.addEventListener(
 event=>{
 
 if(
-event.key==="Escape" &&
-accountModal &&
+event.key==="Escape"&&
+accountModal&&
 accountModal.classList.contains("active")
 ){
 
@@ -1180,8 +1217,7 @@ closeAccountModal();
 
 }
 
-}
-);
+});
 
 loadAddons();
 
